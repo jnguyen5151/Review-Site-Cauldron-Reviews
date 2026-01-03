@@ -32,6 +32,7 @@ artifacts/
 ScaffoldingReadMe.txt
 
 # NuGet Packages
+packages/
 *.nupkg
 # NuGet Symbol Packages
 *.snupkg
@@ -54,6 +55,8 @@ TestResult.xml
 nunit-*.xml
 
 # Visual Studio
+bin/
+obj/
 .vs/
 *.suo
 *.user
@@ -71,3 +74,14 @@ dist/
 .angular/
 .env
 src/environments/environment.local.ts
+**/app.config.ts
+**/environment.ts
+**/environment.local.ts
+
+Web.config
+appsettings.json
+appsettings.Development.json
+appsettings.Local.json
+**/secrets.json
+
+appsettings.json
