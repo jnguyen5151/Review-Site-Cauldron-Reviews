@@ -1,0 +1,54 @@
+.review {
+  border: 1px solid rgb(34,34,59);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.review:hover {
+  background-color: rgb(219,193,172);
+}
+
+.reviewLeft {
+  
+  display: flex;
+  flex: 4;
+  flex-direction: column;
+  margin-left: 15px;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.title {
+  /*    border: 5px solid pink;*/
+  margin-top: 0;
+  margin-bottom: 2px;
+}
+
+.game {
+/*    border: 5px solid pink;*/
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.reviewRight{
+  
+  display: flex;
+  flex: 2;
+  align-items: end;
+  flex-direction: column;
+  margin-right: 15px;
+}
+
+.author {
+  width: 150px;
+  margin: 0;
+}
+
+.dateCreated {
+  width: 150px;
+  margin: 0;
+}
+

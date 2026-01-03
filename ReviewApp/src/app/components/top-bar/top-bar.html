@@ -1,0 +1,13 @@
+<div class="top-bar">
+  <button class="side-bar-button" (click)="toggleSidebar()">SideBar</button>
+  <img class="home-logo" src="/logo.png" alt="Logo" width="100" [routerLink]="['']" />
+  <form action="/" method="post">
+    <input class="search-input" type="text" name="searchByGame" value="" placeholder="Search by Game..." />
+    <button class="search-button" type="button">Search</button>
+  </form>
+  <button *ngIf="isLoggedIn()" class="create-button" type="button" [routerLink]="['/create']">New Review</button>
+  <button *ngIf="!isLoggedIn()" class="login-button" type="button" (click)="openModal()">Login</button>
+  <button *ngIf="isLoggedIn()" class="logout-button" type="button" (click)="logout()">Logout</button>
+  <button *ngIf="isLoggedIn()" class="account-button" type="button">My Account</button>
+  <button *ngIf="!isLoggedIn()"class="register-button" type="button" [routerLink]="['/register']">Register</button>
+</div>

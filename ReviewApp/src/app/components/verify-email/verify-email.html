@@ -1,0 +1,3 @@
+<div *ngIf="status() === 'pending'">Verifying..</div>
+<div *ngIf="status() === 'success'">Email Verified</div>
+<div *ngIf="status() === 'error'">Verification Failed, link may be expired</div>

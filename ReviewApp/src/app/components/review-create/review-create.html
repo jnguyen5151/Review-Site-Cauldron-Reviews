@@ -1,0 +1,105 @@
+<div class="create-card">
+  <div class="create-header">
+    Create Your Review
+  </div>
+  <div class="create-body">
+    <form>
+      <div class="row">
+
+        <label class="row-label"
+               for="gameName">
+          Game:
+        </label>
+
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 [field]="reviewForm.gameName"
+                 id="gameName"
+                 placeholder="Game Name (required)" />
+        </div>
+        @if (reviewForm.gameName().invalid() && reviewForm.gameName().touched())
+        {
+        <div>
+          @for (error of reviewForm.gameName().errors(); track error.kind)
+          {
+          <div>{{ error.message }}</div>
+          }
+        </div>
+        }
+
+        <label class="row-label"
+               for="rating">
+          Rating:
+        </label>
+
+        <div class="row-value">
+          <input type="number"
+                 class="form-control"
+                 [field]="reviewForm.rating"
+                 id="rating"
+                 placeholder="Rating 0-100 (required)" />
+        </div>
+        @if (reviewForm.rating().invalid() && reviewForm.rating().touched())
+        {
+        <div>
+          @for (error of reviewForm.rating().errors(); track error.kind)
+          {
+          <div>{{ error.message }}</div>
+          }
+        </div>
+        }
+
+
+        <label class="row-label"
+               for="title">
+          Title:
+        </label>
+
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 [field]="reviewForm.title"
+                 id="title"
+                 placeholder="Review Title (required)" />
+        </div>
+        @if (reviewForm.title().invalid() && reviewForm.title().touched())
+        {
+        <div>
+          @for (error of reviewForm.title().errors(); track error.kind)
+          {
+          <div>{{ error.message }}</div>
+          }
+        </div>
+        }
+
+      </div>
+
+      <div class="row">
+
+        <label class="row-label"
+               for="content">
+          Content:
+        </label>
+        <div class="row-value">
+          <textarea class="form-control"
+                    [field]="reviewForm.content"
+                    id="content"
+                    rows="20"
+                    cols="100"></textarea>
+        </div>
+        @if (reviewForm.content().invalid() && reviewForm.content().touched())
+        {
+        <div>
+          @for (error of reviewForm.content().errors(); track error.kind)
+          {
+          <div>{{ error.message }}</div>
+          }
+        </div>
+        }
+
+      </div>
+      <button type="button" (click)="submitReview()">Submit Review</button>
+    </form>
+  </div>
+</div>

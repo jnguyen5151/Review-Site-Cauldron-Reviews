@@ -1,0 +1,76 @@
+<div class="account-card">
+  <div class="account-header">
+    Create Your Account
+  </div>
+  <div class="account-body">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="row">
+
+        <label class="row-label"
+               for="userName">
+          Username:
+        </label>
+
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="userName"
+                 id="userName"
+                 placeholder="Username (required)" />
+        </div>
+        @if (registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched)
+        {
+          <div class="error-messages">Username must be 3 - 15 characters in length</div>
+        }
+
+        <label class="row-label"
+               for="title">
+          Email:
+        </label>
+
+        <div class="row-value">
+          <input type="email"
+                 class="form-control"
+                 formControlName="email"
+                 id="email"
+                 placeholder="Email (required)" />
+        </div>
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched)
+        {
+          <div class="error-messages">Enter a valid email</div>
+        }
+
+        <label class="row-label"
+               for="">
+          Password:
+        </label>
+
+        <div class="row-value">
+          <input [type]="showPassword ? 'text' : 'password'"
+                 class="form-control"
+                 formControlName="password"
+                 id="password"
+                 placeholder="Password (required)" />
+        </div>
+
+        <div class="show-password">
+          <button type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide' : 'Show'}} Password
+          </button>
+        </div>
+
+        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid)
+        {
+          @for (message of passwordMessages; track $index)
+          {
+            <div class="error-messages">* {{ message }}</div>
+          }
+        }
+
+      </div>
+
+      <button class="submit-btn" type="submit">Register</button>
+
+    </form>
+  </div>
+</div>

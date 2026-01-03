@@ -1,0 +1,12 @@
+<div class="home">
+  <app-review-component
+    class="review"
+    *ngFor="let review of reviewList()"
+    [review]="review">
+  </app-review-component>
+  <div class="paginator">
+    <button (click)="prevPage()" [disabled]="page === 1">previous</button>
+    <span>Page {{page}}</span>
+    <button (click)="nextPage()" [disabled]="isLastPage === true">next</button>
+  </div>
+</div>

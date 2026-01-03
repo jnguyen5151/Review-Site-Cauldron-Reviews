@@ -1,0 +1,45 @@
+.account-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 5px solid black;
+  background-color: white;
+  border-radius: 12px;
+  max-width: 420px;
+  min-height: 420px;
+}
+
+.account-header {
+
+}
+
+.account-body {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.row {
+
+}
+
+.row-label {
+
+}
+
+.row-value {
+
+}
+
+.error-messages {
+
+}
+
+.show-password {
+
+}
+
+.submit-btn {
+
+}

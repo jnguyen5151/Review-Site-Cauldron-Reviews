@@ -1,0 +1,61 @@
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.side-bar-button {
+  cursor: pointer;
+}
+
+.home-logo {
+  cursor: pointer;
+}
+
+.top-bar form {
+  display: flex;
+  flex: 10;
+  gap: 0.25rem;
+}
+
+.search-input {
+  background-color: rgb(74,78,105);
+  color: rgb(242,233,228);
+  flex: 15;
+}
+
+input::placeholder {
+  color: rgb(242,233,228);
+}
+
+.search-button {
+  flex: 1;
+  cursor: pointer;
+}
+.create-button {
+  flex: 1;
+  cursor: pointer;
+}
+
+.login-button {
+  flex: 1;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.logout-button{
+  flex: 1;
+  cursor: pointer;
+}
+
+.register-button {
+  flex: 1;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.account-button {
+    flex: 1;
+    cursor: pointer;
+}

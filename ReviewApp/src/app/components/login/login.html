@@ -1,0 +1,72 @@
+<div class="login-card">
+  <div class="button-row">
+    <button class="back-button" type="button" (click)="backToLogin()">
+      back
+    </button>
+    <button class="close-button" type="button" (click)="closeModal()">
+      close
+    </button>
+  </div>
+  <div class="login-header">
+    Login
+  </div>
+  <div class="login-body">
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+      <div class="row">
+
+        <label class="row-label" for="identifier">
+          Username or Email:
+        </label>
+
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="identifier"
+                 id="identifier"
+                 placeholder="Enter Username or Email" />
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <label class="row-label" for="password">
+          Password:
+        </label>
+
+        <div class="row-value">
+          <input type="password"
+                 class="form-control"
+                 formControlName="password"
+                 id="password"
+                 placeholder="Enter your Password" />
+        </div>
+
+        <div>
+          <button class="show-password" type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide' : 'Show'}} Password
+          </button>
+        </div>
+
+      </div>
+
+      <div>
+        <button class="submit-btn" type="submit">Login</button>
+      </div>
+
+    </form>
+
+    <div class="recover-button">
+      Forgot Password?
+      <a > Click Here! </a>
+    </div>
+
+    <div>
+      New to Cauldron Reviews?
+      <a routerLink="/register" (click)="closeModal()">Sign Up Here!</a>
+    </div>
+
+  </div>
+</div>

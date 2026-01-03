@@ -1,0 +1,10 @@
+<section class="review" [routerLink] ="['/review', review.reviewId]">
+  <div class="reviewLeft">
+    <h2 class="title"> {{review.title}} </h2>
+    <p class="game"> {{review.gameName}} </p>
+  </div>
+  <div class="reviewRight">
+    <p class="author"> by: {{review.authorName}} </p>
+    <p class="dateCreated">{{review.createdAt | date:'MMMM d, yyyy'}} </p>
+  </div>
+</section>
