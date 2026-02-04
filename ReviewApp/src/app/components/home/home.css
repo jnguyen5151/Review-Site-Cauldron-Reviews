@@ -1,8 +1,25 @@
 .home {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .review {
+}
 
+.paginator {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 10px;
+}
+
+.page-button{
+
+}
+
+.page-number{
+    margin-left: 10px;
+    margin-right: 10px;
 }

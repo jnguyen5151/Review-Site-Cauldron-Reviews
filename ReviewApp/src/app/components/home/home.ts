@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { filter, takeUntil, Subject } from 'rxjs';
 
 import { ReviewComponent } from '../review-component/review-component';
@@ -16,10 +16,12 @@ import { ReviewService, getReviewsResponse } from '../../services/review-service
 })
 export class HomeComponent {
 
+  // Service Injections
+  private reviewService: ReviewService = inject(ReviewService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router); 
+
   reviewList = signal<Review[]>([]);
-  reviewService: ReviewService = inject(ReviewService);
-  router: Router = inject(Router);
-  private sDestroy = new Subject<void>();
 
   reviewCount: number = 15;
   page: number = 1;
@@ -29,21 +31,13 @@ export class HomeComponent {
 
 
   ngOnInit(): void {
-    this.fetchReviews();
 
-    this.router.events
-      .pipe(
-        filter((event: RouterEvent) => event instanceof NavigationEnd),
-        takeUntil(this.sDestroy)
-      )
-      .subscribe(() => {
-        this.fetchReviews();
-      });
-  }
+    console.log('int');
+    this.route.paramMap.subscribe(params => {
+      this.page = +(params.get('page') ?? 1);
+      this.fetchReviews();
+    });
 
-  ngOnDestroy(): void {
-    this.sDestroy.next();
-    this.sDestroy.complete();
   }
 
   fetchReviews() {
@@ -53,13 +47,12 @@ export class HomeComponent {
     this.reviewService.getAllReviews(this.reviewCount, this.page)
       .subscribe({
         next: (data: getReviewsResponse) => {
+
           this.reviewList.set(data.reviews);
           this.totalReviews = data.total;
 
           const totalPages = Math.ceil(data.total / this.reviewCount);
           this.isLastPage = this.page >= totalPages;
-
-          console.log(data);
         },
         error: (err) => {
           console.log('Error getting reviews', err);
@@ -74,13 +67,11 @@ export class HomeComponent {
 
   prevPage() {
     if (this.page <= 1) return;
-    this.page = this.page - 1;
-    this.fetchReviews();
+    this.router.navigate(['/home', this.page - 1]);
   }
 
   nextPage() {
-    this.page = this.page + 1;
-    this.fetchReviews();
+    this.router.navigate(['/home', this.page + 1]);
   }
 
 }

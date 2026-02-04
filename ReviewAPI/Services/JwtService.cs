@@ -26,7 +26,7 @@ namespace ReviewAPI.Services
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, identifier!),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("username", user.UserName ?? ""),
                 new Claim("displayname", user.DisplayName ?? "")
@@ -34,7 +34,7 @@ namespace ReviewAPI.Services
 
             var roles = await _userManager.GetRolesAsync(user);
             authClaims.AddRange(
-                roles.Select(role => new Claim(ClaimTypes.Role, role))
+                roles.Select(role => new Claim("role", role))
             );
 
             var authSigningKey = new SymmetricSecurityKey(

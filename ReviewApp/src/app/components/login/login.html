@@ -37,7 +37,7 @@
         </label>
 
         <div class="row-value">
-          <input type="password"
+          <input [type]="showPassword ? 'text' : 'password'"
                  class="form-control"
                  formControlName="password"
                  id="password"

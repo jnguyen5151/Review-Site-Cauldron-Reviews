@@ -10,6 +10,7 @@ using ReviewAPI.Services;
 using ReviewAPI.Authorization;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ReviewAPI.Controllers
 {
@@ -46,8 +47,7 @@ namespace ReviewAPI.Controllers
             var user = new Users
             {
                 UserName = dto.UserName,
-                Email = dto.Email,
-                DisplayName = dto.UserName
+                Email = dto.Email
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -228,6 +228,25 @@ namespace ReviewAPI.Controllers
 
             return Ok();
 
+        }
+
+        [AllowAnonymous]
+        [HttpPatch("account/update")]
+        public async Task<IActionResult> UpdateAccount([FromBody] UpdateDto updateDto)
+        {
+            var user = await _userManager.FindByIdAsync(JwtRegisteredClaimNames.Sub);
+            if (user is null) return NotFound();
+
+            if (updateDto.DisplayName is not null) user.DisplayName = updateDto.DisplayName!;
+            if (updateDto.Description is not null) user.Description = updateDto.Description!;
+            if (updateDto.Birthday is not null) user.Birthday = updateDto.Birthday!;
+            if (updateDto.Pronouns is not null) user.Pronouns = updateDto.Pronouns!;
+            if (updateDto.SafeMode != user.SafeMode) user.SafeMode = updateDto.SafeMode;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return Ok();
         }
 
     }

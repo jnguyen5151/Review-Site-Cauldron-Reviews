@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-  background-color: rgb(201,173,167);
+  background-color: rgb(54 48 48);
   margin: 0;
   min-height: 100vh;
   font-family: 'Roboto', sans-serif;
+  color: rgb(243 242 242);
 }

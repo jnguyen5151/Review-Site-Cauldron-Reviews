@@ -4,10 +4,16 @@ import { ReviewDetails } from './components/review-details/review-details';
 import { Register } from './components/register/register';
 import { ReviewCreate } from './components/review-create/review-create';
 import { VerifyEmail } from './components/verify-email/verify-email';
+import { MyAccount } from './my-account/my-account';
 
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home/:page',
     component: HomeComponent,
     title: 'Home Page'
   },
@@ -30,5 +36,10 @@ export const routes: Routes = [
     path: 'verify-email/:userId/:token',
     component: VerifyEmail,
     title: 'Email Verification'
+  },
+  {
+    path: 'myAccount',
+    component: MyAccount,
+    title: 'My Account'
   }
 ];
