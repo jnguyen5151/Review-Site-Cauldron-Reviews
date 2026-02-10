@@ -19,6 +19,7 @@ const PUBLIC_ENDPOINTS = [
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   const authService = inject(AuthService);
+
   const isPublic = PUBLIC_ENDPOINTS.some(url =>
     req.url.includes(url)
   );
@@ -35,7 +36,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         return authService.refresh().pipe(
           switchMap(() => {
             isRefreshing = false;
-            return next(req.clone({withCredentials:true}));
+            return next(authReq.clone({withCredentials:true}));
           }),
           catchError((refreshError: HttpErrorResponse) => {
             isRefreshing = false;

@@ -4,7 +4,7 @@ import { ReviewDetails } from './components/review-details/review-details';
 import { Register } from './components/register/register';
 import { ReviewCreate } from './components/review-create/review-create';
 import { VerifyEmail } from './components/verify-email/verify-email';
-import { MyAccount } from './my-account/my-account';
+import { MyAccount } from './components/my-account/my-account';
 
 export const routes: Routes = [
   {

@@ -11,6 +11,7 @@ using ReviewAPI.Authorization;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ReviewAPI.Controllers
 {
@@ -230,18 +231,48 @@ namespace ReviewAPI.Controllers
 
         }
 
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAccount()
+        {
+            Console.WriteLine("! GetAccount Ran !");
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            if (userId is null) 
+            {
+                Console.WriteLine(userId);
+                return NotFound(); 
+            }
+
+            var user = await _userManager.FindByIdAsync(userId!);
+            if (user is null) 
+            {
+                Console.WriteLine("! User not Found !");
+                Console.WriteLine(userId);
+                return NotFound(); 
+            }
+
+            AccountDto returnDto = new AccountDto();
+
+            returnDto.DisplayName = user.DisplayName;
+            returnDto.Description = user.Description;
+            returnDto.Birthday = user.Birthday;
+            returnDto.Pronouns = user.Pronouns;
+            returnDto.SafeMode = user.SafeMode;
+
+            return Ok(returnDto);
+        }
+
         [AllowAnonymous]
-        [HttpPatch("account/update")]
-        public async Task<IActionResult> UpdateAccount([FromBody] UpdateDto updateDto)
+        [HttpPatch("update")]
+        public async Task<IActionResult> UpdateAccount([FromBody] AccountDto accountInfo)
         {
             var user = await _userManager.FindByIdAsync(JwtRegisteredClaimNames.Sub);
             if (user is null) return NotFound();
 
-            if (updateDto.DisplayName is not null) user.DisplayName = updateDto.DisplayName!;
-            if (updateDto.Description is not null) user.Description = updateDto.Description!;
-            if (updateDto.Birthday is not null) user.Birthday = updateDto.Birthday!;
-            if (updateDto.Pronouns is not null) user.Pronouns = updateDto.Pronouns!;
-            if (updateDto.SafeMode != user.SafeMode) user.SafeMode = updateDto.SafeMode;
+            if (accountInfo.DisplayName is not null) user.DisplayName = accountInfo.DisplayName!;
+            if (accountInfo.Description is not null) user.Description = accountInfo.Description!;
+            if (accountInfo.Birthday is not null) user.Birthday = accountInfo.Birthday!;
+            if (accountInfo.Pronouns is not null) user.Pronouns = accountInfo.Pronouns!;
+            if (accountInfo.SafeMode != user.SafeMode) user.SafeMode = accountInfo.SafeMode;
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded) return BadRequest(result.Errors);

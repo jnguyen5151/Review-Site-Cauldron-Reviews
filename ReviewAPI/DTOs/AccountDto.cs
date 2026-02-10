@@ -2,7 +2,7 @@
 
 namespace ReviewAPI.DTOs
 {
-    public class UpdateDto
+    public class AccountDto
     {
         [Required]
         public string Id { get; set; } = null!;

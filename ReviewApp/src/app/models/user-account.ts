@@ -17,3 +17,11 @@ export interface UserModel {
   displayName: string,
   email: string
 }
+
+export interface AccountDetailsModel {
+  displayName: string,
+  description: string,
+  birthday: Date,
+  pronouns: string,
+  safeMode: boolean
+}

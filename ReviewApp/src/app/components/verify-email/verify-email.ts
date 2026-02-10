@@ -17,7 +17,7 @@ export class VerifyEmail {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private authService = inject(AuthService);
 
-  constructor() {
+  ngOnInit(): void {
     this.verifyEmail();
   }
 
