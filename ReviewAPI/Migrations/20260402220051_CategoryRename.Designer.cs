@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReviewAPI.Models;
 
@@ -11,9 +12,11 @@ using ReviewAPI.Models;
 namespace ReviewAPI.Migrations
 {
     [DbContext(typeof(GameReviewContext))]
-    partial class GameReviewContextModelSnapshot : ModelSnapshot
+    [Migration("20260402220051_CategoryRename")]
+    partial class CategoryRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,8 +311,11 @@ namespace ReviewAPI.Migrations
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppGenre", b =>
                 {
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("GenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreId"));
 
                     b.Property<string>("Genre")
                         .IsRequired()
@@ -372,8 +378,8 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("AppId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
 
                     b.HasKey("AppId", "GenreId");
 

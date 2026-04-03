@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReviewAPI.Models;
 
@@ -11,9 +12,11 @@ using ReviewAPI.Models;
 namespace ReviewAPI.Migrations
 {
     [DbContext(typeof(GameReviewContext))]
-    partial class GameReviewContextModelSnapshot : ModelSnapshot
+    [Migration("20260323222911_BaseLine")]
+    partial class BaseLine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,6 +216,22 @@ namespace ReviewAPI.Migrations
                     b.ToTable("GameReviews");
                 });
 
+            modelBuilder.Entity("ReviewAPI.Models.IngestionState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LastAppId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IngestionStates");
+                });
+
             modelBuilder.Entity("ReviewAPI.Models.SteamApp", b =>
                 {
                     b.Property<int>("AppId")
@@ -224,34 +243,13 @@ namespace ReviewAPI.Migrations
                     b.Property<string>("HeaderImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsEnriched")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFree")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Linux")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Mac")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("OwnersAvg")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OwnersMax")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OwnersMin")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
@@ -260,33 +258,9 @@ namespace ReviewAPI.Migrations
                     b.Property<string>("ReleaseDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequiredAge")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Windows")
-                        .HasColumnType("bit");
-
                     b.HasKey("AppId");
 
                     b.ToTable("SteamApps");
-                });
-
-            modelBuilder.Entity("ReviewAPI.Models.SteamAppCategory", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppDeveloper", b =>
@@ -308,8 +282,11 @@ namespace ReviewAPI.Migrations
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppGenre", b =>
                 {
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("GenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreId"));
 
                     b.Property<string>("Genre")
                         .IsRequired()
@@ -334,22 +311,7 @@ namespace ReviewAPI.Migrations
 
                     b.HasKey("PublisherId");
 
-                    b.ToTable("Publishers");
-                });
-
-            modelBuilder.Entity("ReviewAPI.Models.SteamAppToCategory", b =>
-                {
-                    b.Property<int>("AppId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AppId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("AppCategories");
+                    b.ToTable("publishers");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppToDeveloper", b =>
@@ -360,9 +322,17 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("DeveloperId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SteamAppAppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SteamAppDeveloperDeveloperId")
+                        .HasColumnType("int");
+
                     b.HasKey("AppId", "DeveloperId");
 
-                    b.HasIndex("DeveloperId");
+                    b.HasIndex("SteamAppAppId");
+
+                    b.HasIndex("SteamAppDeveloperDeveloperId");
 
                     b.ToTable("AppDevelopers");
                 });
@@ -372,12 +342,20 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("AppId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GenreId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SteamAppAppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SteamAppGenreGenreId")
+                        .HasColumnType("int");
 
                     b.HasKey("AppId", "GenreId");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("SteamAppAppId");
+
+                    b.HasIndex("SteamAppGenreGenreId");
 
                     b.ToTable("AppGenres");
                 });
@@ -390,9 +368,17 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SteamAppAppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SteamAppPublisherPublisherId")
+                        .HasColumnType("int");
+
                     b.HasKey("AppId", "PublisherId");
 
-                    b.HasIndex("PublisherId");
+                    b.HasIndex("SteamAppAppId");
+
+                    b.HasIndex("SteamAppPublisherPublisherId");
 
                     b.ToTable("AppPublishers");
                 });
@@ -549,36 +535,17 @@ namespace ReviewAPI.Migrations
                         .HasForeignKey("UsersId");
                 });
 
-            modelBuilder.Entity("ReviewAPI.Models.SteamAppToCategory", b =>
-                {
-                    b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
-                        .WithMany("SteamAppCategory")
-                        .HasForeignKey("AppId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReviewAPI.Models.SteamAppCategory", "SteamAppCategory")
-                        .WithMany("GameCategorys")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SteamApp");
-
-                    b.Navigation("SteamAppCategory");
-                });
-
             modelBuilder.Entity("ReviewAPI.Models.SteamAppToDeveloper", b =>
                 {
                     b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
                         .WithMany("SteamAppDeveloper")
-                        .HasForeignKey("AppId")
+                        .HasForeignKey("SteamAppAppId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReviewAPI.Models.SteamAppDeveloper", "SteamAppDeveloper")
                         .WithMany("GameDevelopers")
-                        .HasForeignKey("DeveloperId")
+                        .HasForeignKey("SteamAppDeveloperDeveloperId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -591,13 +558,13 @@ namespace ReviewAPI.Migrations
                 {
                     b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
                         .WithMany("SteamAppGenre")
-                        .HasForeignKey("AppId")
+                        .HasForeignKey("SteamAppAppId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReviewAPI.Models.SteamAppGenre", "SteamAppGenre")
                         .WithMany("GameGenres")
-                        .HasForeignKey("GenreId")
+                        .HasForeignKey("SteamAppGenreGenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -610,13 +577,13 @@ namespace ReviewAPI.Migrations
                 {
                     b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
                         .WithMany("SteamAppPublisher")
-                        .HasForeignKey("AppId")
+                        .HasForeignKey("SteamAppAppId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReviewAPI.Models.SteamAppPublisher", "SteamAppPublisher")
-                        .WithMany("GamePublisher")
-                        .HasForeignKey("PublisherId")
+                        .WithMany("Gamepublisher")
+                        .HasForeignKey("SteamAppPublisherPublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -627,18 +594,11 @@ namespace ReviewAPI.Migrations
 
             modelBuilder.Entity("ReviewAPI.Models.SteamApp", b =>
                 {
-                    b.Navigation("SteamAppCategory");
-
                     b.Navigation("SteamAppDeveloper");
 
                     b.Navigation("SteamAppGenre");
 
                     b.Navigation("SteamAppPublisher");
-                });
-
-            modelBuilder.Entity("ReviewAPI.Models.SteamAppCategory", b =>
-                {
-                    b.Navigation("GameCategorys");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppDeveloper", b =>
@@ -653,7 +613,7 @@ namespace ReviewAPI.Migrations
 
             modelBuilder.Entity("ReviewAPI.Models.SteamAppPublisher", b =>
                 {
-                    b.Navigation("GamePublisher");
+                    b.Navigation("Gamepublisher");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.Users", b =>

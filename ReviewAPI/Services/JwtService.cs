@@ -26,7 +26,7 @@ namespace ReviewAPI.Services
 
             var authClaims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("username", user.UserName ?? ""),
                 new Claim("displayname", user.DisplayName ?? "")

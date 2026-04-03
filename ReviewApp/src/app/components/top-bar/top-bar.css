@@ -28,14 +28,15 @@
   flex: 4;
   justify-content: center;
   align-items: center;
-
 }
 
 .right-topbar {
   display: flex;
   flex: 3;
-  align-items: center;
+  align-items: end;
   justify-content: flex-end;
+  padding: 12px;
+  gap: 12px;
 }
 
 .side-bar-button {
@@ -60,6 +61,7 @@
   flex-grow: 1;
   border-radius: 24px;
   background: rgb(54 48 48);
+  align-items: center;
 }
 
 .search-input {
@@ -82,13 +84,6 @@ input:focus::placeholder {
 
 input:focus {
     outline: none;
-}
-
-.search-button {
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: white;
 }
 
 .create-button {

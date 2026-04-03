@@ -32,7 +32,6 @@ export class HomeComponent {
 
   ngOnInit(): void {
 
-    console.log('int');
     this.route.paramMap.subscribe(params => {
       this.page = +(params.get('page') ?? 1);
       this.fetchReviews();

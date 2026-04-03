@@ -1,1 +1,76 @@
-<p>my-account works!</p>
+<div class="myaccount">
+  <div class="account-images">
+
+  </div>
+  <div class="account-form">
+    <form [formGroup]="accountForm">
+
+      <div class="row">
+        <label class="row-label" for="display-name">
+          Display Name
+        </label>
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="displayName"
+                 id="display-name"
+                 placeholder="{{accountForm.get('displayName')?.value}}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="row-label" for="pronouns">
+          Pronouns
+        </label>
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="pronouns"
+                 id="pronouns"
+                 placeholder="{{accountForm.get('pronouns')?.value}}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="row-label" for="birthday">
+          Birthday
+        </label>
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="birthday"
+                 id="birthday"
+                 placeholder="{{accountForm.get('birthday')?.value}}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="row-label" for="safeMode">
+          Block NSFW Games
+        </label>
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="safeMode"
+                 id="safe-mode"
+                 placeholder="{{accountForm.get('safeMode')?.value}}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="row-label" for="description">
+          Description
+        </label>
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="description"
+                 id="description"
+                 placeholder="{{accountForm.get('description')?.value}}" />
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</div>

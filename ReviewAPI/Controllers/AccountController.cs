@@ -105,12 +105,12 @@ namespace ReviewAPI.Controllers
 
             if (user == null)
             {
-                return Unauthorized("Invalid Login Credentials");
+                return BadRequest("Invalid Login Credentials");
             }
 
             if (!user.EmailConfirmed)
             {
-                return Unauthorized("Email not Verified, Please check your Email's Inbox and Spam");
+                return BadRequest("Email not Verified, Please check your Email's Inbox and Spam");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(
@@ -121,7 +121,7 @@ namespace ReviewAPI.Controllers
 
             if (!result.Succeeded)
             {
-                return Unauthorized("Invalid Login Credentials");
+                return BadRequest("Invalid Login Credentials");
             }
 
             var accessToken = await _jwtService.GenerateAccessToken(user);
@@ -235,18 +235,23 @@ namespace ReviewAPI.Controllers
         public async Task<IActionResult> GetAccount()
         {
             Console.WriteLine("! GetAccount Ran !");
-            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId is null) 
             {
-                Console.WriteLine(userId);
+                Console.WriteLine("null user id");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"{claim.Type} = {claim.Value}");
+                }
+                
                 return NotFound(); 
             }
 
-            var user = await _userManager.FindByIdAsync(userId!);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user is null) 
             {
                 Console.WriteLine("! User not Found !");
-                Console.WriteLine(userId);
+                Console.WriteLine("null user");
                 return NotFound(); 
             }
 

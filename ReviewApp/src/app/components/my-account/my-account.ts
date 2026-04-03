@@ -6,7 +6,7 @@ import { AccountDetailsModel } from '../../models/user-account';
 
 @Component({
   selector: 'app-my-account',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
 })
@@ -23,10 +23,13 @@ export class MyAccount {
   })
 
   ngOnInit(): void {
+
     this.authService.getAccount().subscribe((data: AccountDetailsModel) => {
+
       console.log("data is " + data);
       this.userDetails.set(data);
       console.log(this.userDetails);
+
       this.accountForm.setValue({
         displayName: data.displayName,
         description: data.description,
@@ -34,7 +37,9 @@ export class MyAccount {
         pronouns: data.pronouns,
         safeMode: data.safeMode
       });
+
       console.log(this.accountForm.value);
+
     })
   }
 }
