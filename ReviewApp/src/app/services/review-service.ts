@@ -13,7 +13,7 @@ export class ReviewService {
   private url = `${environment.apiUrl}/GameReview`;
   private http = inject(HttpClient);
 
-  getAllReviews(reviewCount: number, page: number): Observable<getReviewsResponse> {
+  getAllReviews(reviewCount: number = 15, page: number = 1): Observable<getReviewsResponse> {
     return this.http.get<getReviewsResponse>(`${this.url}/getAll`, { params: { reviewCount, page } });
   }
   //.pipe(map((reviews: Review[]) => reviews.map((review: Review) => this.httpDecode(review)))

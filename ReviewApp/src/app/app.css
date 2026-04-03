@@ -2,16 +2,16 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  
 }
 
 header {
-  background-color: rgb(34,34,59);
+  background-color: rgb(19 17 17);
 }
 
 .home-body {
 }
 
 footer {
-  background-color: rgb(34,34,59);
+  background-color: rgb(19 17 17)
 }

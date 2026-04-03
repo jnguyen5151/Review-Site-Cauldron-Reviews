@@ -11,11 +11,13 @@ namespace ReviewAPI.Models
         [Required]
         [MaxLength(50)]
         public string AuthorName { get; set; } = "";
+        public int AutherId { get; set; }
 
         [Required]
         [MaxLength(50)]
         [Column(TypeName = "nvarchar(50)")]
         public string GameName { get; set; } = "";
+        public int SteamAppId { get; set; }
 
         [Range(0, 100, ErrorMessage = "Rating must be between 1 - 100")]
         public int Rating { get; set; }
@@ -32,9 +34,7 @@ namespace ReviewAPI.Models
         public string Title { get; set; } = "";
 
         public uint Likes { get; set; }
-
         public uint Dislikes { get; set; }
-
         public uint CommentNumber { get; set; }
     }
 

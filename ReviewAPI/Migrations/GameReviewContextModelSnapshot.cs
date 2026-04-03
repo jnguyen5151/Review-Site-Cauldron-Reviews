@@ -163,6 +163,9 @@ namespace ReviewAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
+                    b.Property<int>("AutherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("AuthorName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -192,6 +195,9 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<int>("SteamAppId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -207,6 +213,190 @@ namespace ReviewAPI.Migrations
                     b.ToTable("GameReviews");
                 });
 
+            modelBuilder.Entity("ReviewAPI.Models.SteamApp", b =>
+                {
+                    b.Property<int>("AppId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HeaderImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEnriched")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Linux")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Mac")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("OwnersAvg")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OwnersMax")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OwnersMin")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("ReleaseDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequiredAge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Windows")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AppId");
+
+                    b.ToTable("SteamApps");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppDeveloper", b =>
+                {
+                    b.Property<int>("DeveloperId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeveloperId"));
+
+                    b.Property<string>("Developer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DeveloperId");
+
+                    b.ToTable("Developers");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppGenre", b =>
+                {
+                    b.Property<string>("GenreId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GenreId");
+
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppPublisher", b =>
+                {
+                    b.Property<int>("PublisherId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublisherId"));
+
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PublisherId");
+
+                    b.ToTable("Publishers");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToCategory", b =>
+                {
+                    b.Property<int>("AppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("AppCategories");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToDeveloper", b =>
+                {
+                    b.Property<int>("AppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeveloperId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppId", "DeveloperId");
+
+                    b.HasIndex("DeveloperId");
+
+                    b.ToTable("AppDevelopers");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToGenre", b =>
+                {
+                    b.Property<int>("AppId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GenreId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AppId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("AppGenres");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToPublisher", b =>
+                {
+                    b.Property<int>("AppId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublisherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppId", "PublisherId");
+
+                    b.HasIndex("PublisherId");
+
+                    b.ToTable("AppPublishers");
+                });
+
             modelBuilder.Entity("ReviewAPI.Models.Users", b =>
                 {
                     b.Property<string>("Id")
@@ -215,16 +405,25 @@ namespace ReviewAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -256,11 +455,18 @@ namespace ReviewAPI.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Pronouns")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RefreshTokenExpiryTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("SafeMode")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -341,6 +547,113 @@ namespace ReviewAPI.Migrations
                     b.HasOne("ReviewAPI.Models.Users", null)
                         .WithMany("Reviews")
                         .HasForeignKey("UsersId");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToCategory", b =>
+                {
+                    b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
+                        .WithMany("SteamAppCategory")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReviewAPI.Models.SteamAppCategory", "SteamAppCategory")
+                        .WithMany("GameCategorys")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SteamApp");
+
+                    b.Navigation("SteamAppCategory");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToDeveloper", b =>
+                {
+                    b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
+                        .WithMany("SteamAppDeveloper")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReviewAPI.Models.SteamAppDeveloper", "SteamAppDeveloper")
+                        .WithMany("GameDevelopers")
+                        .HasForeignKey("DeveloperId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SteamApp");
+
+                    b.Navigation("SteamAppDeveloper");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToGenre", b =>
+                {
+                    b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
+                        .WithMany("SteamAppGenre")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReviewAPI.Models.SteamAppGenre", "SteamAppGenre")
+                        .WithMany("GameGenres")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SteamApp");
+
+                    b.Navigation("SteamAppGenre");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppToPublisher", b =>
+                {
+                    b.HasOne("ReviewAPI.Models.SteamApp", "SteamApp")
+                        .WithMany("SteamAppPublisher")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReviewAPI.Models.SteamAppPublisher", "SteamAppPublisher")
+                        .WithMany("GamePublisher")
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SteamApp");
+
+                    b.Navigation("SteamAppPublisher");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamApp", b =>
+                {
+                    b.Navigation("SteamAppCategory");
+
+                    b.Navigation("SteamAppDeveloper");
+
+                    b.Navigation("SteamAppGenre");
+
+                    b.Navigation("SteamAppPublisher");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppCategory", b =>
+                {
+                    b.Navigation("GameCategorys");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppDeveloper", b =>
+                {
+                    b.Navigation("GameDevelopers");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppGenre", b =>
+                {
+                    b.Navigation("GameGenres");
+                });
+
+            modelBuilder.Entity("ReviewAPI.Models.SteamAppPublisher", b =>
+                {
+                    b.Navigation("GamePublisher");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.Users", b =>

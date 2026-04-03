@@ -8,12 +8,13 @@ using ReviewAPI.Models;
 using ReviewAPI.Services;
 using ReviewAPI.Data;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add Service Configs/Settings
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<SteamSettings>(builder.Configuration.GetSection("Steam"));
 
 // Database
 builder.Services.AddDbContext<GameReviewContext>(options =>
@@ -29,6 +30,7 @@ builder.Services.AddAWSService<IAmazonSimpleEmailService>();
 // Add Custom Services
 builder.Services.AddScoped<IAccountEmailService, AccountEmailService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddHttpClient<SteamService>();
 
 // .net Identity
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
@@ -47,7 +49,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddJwtBearer(options =>
+.AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = true;
     options.SaveToken = false;
@@ -58,12 +60,14 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        RoleClaimType = ClaimTypes.Role,
         ValidIssuer = jwtSettings["ValidIssuer"],
         ValidAudience = jwtSettings["ValidAudience"],
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtSettings["Secret"]!)
-            ),
+        ),
+
+        NameClaimType = JwtRegisteredClaimNames.Sub,
+        RoleClaimType = ClaimTypes.Role,
 
         ClockSkew = TimeSpan.Zero
 
@@ -125,6 +129,15 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     await RoleSeed.SeedAsync(scope.ServiceProvider);
+}
+
+// Test Run on Start
+
+using (var scope = app.Services.CreateScope())
+{
+    var steamService = scope.ServiceProvider.GetRequiredService<SteamService>();
+    await steamService.TestSteamDetails();
+    //await steamService.ImportAppsBase();
 }
 
 app.Run();

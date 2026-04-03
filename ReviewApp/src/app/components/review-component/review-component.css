@@ -6,9 +6,9 @@
   cursor: pointer;
 }
 
-.review:hover {
-  background-color: rgb(219,193,172);
-}
+  .review:hover {
+    background-color: rgb(80 73 73);
+  }
 
 .reviewLeft {
   

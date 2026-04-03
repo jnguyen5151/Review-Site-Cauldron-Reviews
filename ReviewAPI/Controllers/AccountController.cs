@@ -10,6 +10,8 @@ using ReviewAPI.Services;
 using ReviewAPI.Authorization;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ReviewAPI.Controllers
 {
@@ -46,8 +48,7 @@ namespace ReviewAPI.Controllers
             var user = new Users
             {
                 UserName = dto.UserName,
-                Email = dto.Email,
-                DisplayName = dto.UserName
+                Email = dto.Email
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -104,12 +105,12 @@ namespace ReviewAPI.Controllers
 
             if (user == null)
             {
-                return Unauthorized("Invalid Login Credentials");
+                return BadRequest("Invalid Login Credentials");
             }
 
             if (!user.EmailConfirmed)
             {
-                return Unauthorized("Email not Verified, Please check your Email's Inbox and Spam");
+                return BadRequest("Email not Verified, Please check your Email's Inbox and Spam");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(
@@ -120,7 +121,7 @@ namespace ReviewAPI.Controllers
 
             if (!result.Succeeded)
             {
-                return Unauthorized("Invalid Login Credentials");
+                return BadRequest("Invalid Login Credentials");
             }
 
             var accessToken = await _jwtService.GenerateAccessToken(user);
@@ -228,6 +229,60 @@ namespace ReviewAPI.Controllers
 
             return Ok();
 
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAccount()
+        {
+            Console.WriteLine("! GetAccount Ran !");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null) 
+            {
+                Console.WriteLine("null user id");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"{claim.Type} = {claim.Value}");
+                }
+                
+                return NotFound(); 
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) 
+            {
+                Console.WriteLine("! User not Found !");
+                Console.WriteLine("null user");
+                return NotFound(); 
+            }
+
+            AccountDto returnDto = new AccountDto();
+
+            returnDto.DisplayName = user.DisplayName;
+            returnDto.Description = user.Description;
+            returnDto.Birthday = user.Birthday;
+            returnDto.Pronouns = user.Pronouns;
+            returnDto.SafeMode = user.SafeMode;
+
+            return Ok(returnDto);
+        }
+
+        [AllowAnonymous]
+        [HttpPatch("update")]
+        public async Task<IActionResult> UpdateAccount([FromBody] AccountDto accountInfo)
+        {
+            var user = await _userManager.FindByIdAsync(JwtRegisteredClaimNames.Sub);
+            if (user is null) return NotFound();
+
+            if (accountInfo.DisplayName is not null) user.DisplayName = accountInfo.DisplayName!;
+            if (accountInfo.Description is not null) user.Description = accountInfo.Description!;
+            if (accountInfo.Birthday is not null) user.Birthday = accountInfo.Birthday!;
+            if (accountInfo.Pronouns is not null) user.Pronouns = accountInfo.Pronouns!;
+            if (accountInfo.SafeMode != user.SafeMode) user.SafeMode = accountInfo.SafeMode;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return Ok();
         }
 
     }

@@ -1,13 +1,47 @@
 <div class="top-bar">
-  <button class="side-bar-button" (click)="toggleSidebar()">SideBar</button>
-  <img class="home-logo" src="/logo.png" alt="Logo" width="100" [routerLink]="['']" />
-  <form action="/" method="post">
-    <input class="search-input" type="text" name="searchByGame" value="" placeholder="Search by Game..." />
-    <button class="search-button" type="button">Search</button>
-  </form>
-  <button *ngIf="isLoggedIn()" class="create-button" type="button" [routerLink]="['/create']">New Review</button>
-  <button *ngIf="!isLoggedIn()" class="login-button" type="button" (click)="openModal()">Login</button>
-  <button *ngIf="isLoggedIn()" class="logout-button" type="button" (click)="logout()">Logout</button>
-  <button *ngIf="isLoggedIn()" class="account-button" type="button">My Account</button>
-  <button *ngIf="!isLoggedIn()"class="register-button" type="button" [routerLink]="['/register']">Register</button>
+  <div class="left-topbar">
+    <span class="icon icon-xl hover" (click)="toggleSidebar()">
+      menu
+    </span>
+    <img class="home-logo" src="/logo.png" alt="Logo" width="100" [routerLink]="['']" />
+  </div>
+
+  <div class="center-topbar">
+    <form action="/" method="post">
+      <span class="icon icon-lg">
+        search
+      </span>
+      <input class="search-input" type="text" name="searchByGame" placeholder="Search by Game..." />
+    </form>
+  </div>
+
+  <div class="right-topbar">
+    <div class="flex-col center-v justify-between hover">
+      <span *ngIf="isLoggedIn()" class="icon icon-xl" [routerLink]="['/create']">
+        add
+      </span>
+      <div>Create</div>
+    </div>
+
+    <button *ngIf="!isLoggedIn()" class="login-button topbar-button" type="button" (click)="openModal()">Login</button>
+
+    <div class="flex-col center-v justify-between hover">
+      <span *ngIf="isLoggedIn()" class="icon icon-xl" [routerLink]="['/myAccount']">
+        account_box
+      </span>
+      <div>Account</div>
+    </div>
+
+    <button *ngIf="!isLoggedIn()" class="register-button topbar-button" type="button" [routerLink]="['/register']">Register</button>
+
+    <div class="flex-col center-v justify-between hover">
+      <span *ngIf="isLoggedIn()" class="icon icon-xl" (click)="logout()">
+        logout
+      </span>
+      <div>
+        Logout
+      </div>
+    </div>
+  
+  </div>
 </div>
