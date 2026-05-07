@@ -74,7 +74,6 @@ dist/
 .angular/
 .env
 src/environments/environment.local.ts
-**/app.config.ts
 **/environment.ts
 **/environment.local.ts
 
