@@ -7,7 +7,7 @@ namespace ReviewAPI.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        public string GenreId { get; set; }
+        public string GenreId { get; set; } = "";
 
         [Required]
         public string Genre { get; set; } = "";

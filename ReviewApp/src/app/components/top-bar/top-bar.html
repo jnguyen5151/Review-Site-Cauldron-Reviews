@@ -6,13 +6,27 @@
     <img class="home-logo" src="/logo.png" alt="Logo" width="100" [routerLink]="['']" />
   </div>
 
-  <div class="center-topbar">
-    <form action="/" method="post">
-      <span class="icon icon-lg">
-        search
-      </span>
-      <input class="search-input" type="text" name="searchByGame" placeholder="Search by Game..." />
-    </form>
+  <div class="search-wrapper">
+    <div class="center-topbar">
+      <form action="/" method="post">
+        <input class="search-input" type="text" name="searchByGame" placeholder="Search by Game..." (input)="searchString.set($event.target.value)" />
+        <span class="icon icon-lg">
+          search
+        </span>
+      </form>
+    </div>
+    <div class="search-results">
+      @if (searchResults().length > 0)
+      {
+      <ul class="search-list">
+        @for (result of searchResults(); track result.appId)
+        {
+          <li class="single-result">{{ result.name }}</li>
+        }
+        <li class="single-result"> Show More</li>
+      </ul>
+      }
+    </div>
   </div>
 
   <div class="right-topbar">
