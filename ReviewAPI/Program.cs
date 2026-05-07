@@ -131,13 +131,13 @@ using (var scope = app.Services.CreateScope())
     await RoleSeed.SeedAsync(scope.ServiceProvider);
 }
 
-// Test Run on Start
+// Services on Start
 
-using (var scope = app.Services.CreateScope())
-{
-    var steamService = scope.ServiceProvider.GetRequiredService<SteamService>();
-    await steamService.TestSteamDetails();
-    //await steamService.ImportAppsBase();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var steamService = scope.ServiceProvider.GetRequiredService<SteamService>();
+//    await steamService.TestSteamDetails();
+//    await steamService.ImportAppsBase();
+//}
 
 app.Run();
