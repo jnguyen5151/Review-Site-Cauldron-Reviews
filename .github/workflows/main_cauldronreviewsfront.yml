@@ -22,7 +22,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '24.x'
-
+      - name: Create environment files
+        run: |
+          cat > src/environments/environment.ts << EOF
+          export const environment = {
+            production: false,
+            apiUrl: '${{ secrets.API_URL }}',
+            frontendUrl: '${{ secrets.FRONTEND_URL }}'
+          };
+          EOF
+          cat > src/environments/environment.prod.ts << EOF
+          export const environment = {
+            production: true,
+            apiUrl: '${{ secrets.API_URL }}',
+            frontendUrl: '${{ secrets.FRONTEND_URL }}'
+          };
+          EOF
+        working-directory: ReviewApp
       - name: npm install, build, and test
         run: |
           npm install
