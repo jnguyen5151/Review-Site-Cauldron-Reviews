@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class ReviewService {
 
-  private url = `${environment.apiUrl}/GameReview`;
+  private url = `${environment.apiUrl}/api/GameReview`;
   private http = inject(HttpClient);
 
   getAllReviews(reviewCount: number = 15, page: number = 1): Observable<getReviewsResponse> {

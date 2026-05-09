@@ -10,7 +10,7 @@ import { RegisterModel, LoginModel, UserModel } from '../models/user-account';
 })
 export class AuthService {
 
-  private apiUrl = `${environment.apiUrl}/account`;
+  private apiUrl = `${environment.apiUrl}/api/account`;
   private http = inject(HttpClient);
 
   public $user = signal<UserModel | null>(null);
