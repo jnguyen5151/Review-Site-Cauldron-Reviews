@@ -99,7 +99,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngular",
         policy => policy
             .AllowCredentials()
-            .WithOrigins("http://localhost:4200", "https://aboveground-nonreliably-elvis.ngrok-free.dev")
+            .WithOrigins("http://localhost:4200", "https://aboveground-nonreliably-elvis.ngrok-free.dev", "https://cauldronreviewsfrontend-dtcfc7g4fpgqcqd8.centralus-01.azurewebsites.net")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
