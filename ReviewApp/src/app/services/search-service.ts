@@ -10,7 +10,7 @@ import { CardModel, GenreModel, CategoryModel, PublisherModel, DeveloperModel } 
 })
 export class SearchService {
 
-  private url = `${environment.apiUrl}/SteamApp`;
+  private url = `${environment.apiUrl}/api/SteamApp`;
   private http = inject(HttpClient);
 
   gameSearch(search?: string, categories?: number[], genres?: string[], publishers?: string[], developers?: string[], page?: number, appCount?: number): Observable<CardModel[]> {
