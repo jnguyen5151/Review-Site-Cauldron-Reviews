@@ -30,8 +30,8 @@
   </div>
 
   <div class="right-topbar">
-    <div class="flex-col center-v justify-between hover">
-      <span *ngIf="isLoggedIn()" class="icon icon-xl" [routerLink]="['/create']">
+    <div *ngIf="isLoggedIn()" class="flex-col center-v justify-between hover">
+      <span class="icon icon-xl" [routerLink]="['/create']">
         add
       </span>
       <div>Create</div>
@@ -39,8 +39,8 @@
 
     <button *ngIf="!isLoggedIn()" class="login-button topbar-button" type="button" (click)="openModal()">Login</button>
 
-    <div class="flex-col center-v justify-between hover">
-      <span *ngIf="isLoggedIn()" class="icon icon-xl" [routerLink]="['/myAccount']">
+    <div *ngIf="isLoggedIn()" class="flex-col center-v justify-between hover">
+      <span class="icon icon-xl" [routerLink]="['/myAccount']">
         account_box
       </span>
       <div>Account</div>
@@ -48,8 +48,8 @@
 
     <button *ngIf="!isLoggedIn()" class="register-button topbar-button" type="button" [routerLink]="['/register']">Register</button>
 
-    <div class="flex-col center-v justify-between hover">
-      <span *ngIf="isLoggedIn()" class="icon icon-xl" (click)="logout()">
+    <div *ngIf="isLoggedIn()" class="flex-col center-v justify-between hover">
+      <span class="icon icon-xl" (click)="logout()">
         logout
       </span>
       <div>
