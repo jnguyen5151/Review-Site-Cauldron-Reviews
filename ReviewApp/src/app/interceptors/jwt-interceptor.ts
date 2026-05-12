@@ -36,7 +36,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         return authService.refresh().pipe(
           switchMap(() => {
             isRefreshing = false;
-            return next(authReq.clone({withCredentials:true}));
+            return next(req.clone({withCredentials:true}));
           }),
           catchError((refreshError: HttpErrorResponse) => {
             isRefreshing = false;
