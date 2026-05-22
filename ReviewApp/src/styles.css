@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-  background-color: rgb(54 48 48);
+  background-color: #1a1a1b;
   margin: 0;
   min-height: 100vh;
   font-family: 'Roboto', sans-serif;
-  color: rgb(243 242 242);
+  color: #e2e2f0;
 }
 
 
@@ -20,6 +20,7 @@ body {
   white-space: nowrap;
   direction: ltr;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  color: #e2e2f0;
 }
 
 .hover { cursor: pointer; }
