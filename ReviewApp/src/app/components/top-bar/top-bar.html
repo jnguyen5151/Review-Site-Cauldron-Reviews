@@ -6,7 +6,7 @@
     <img class="home-logo" src="/logo.png" alt="Logo" width="100" [routerLink]="['']" />
   </div>
 
-  <div class="search-wrapper">
+  <div class="search-wrapper" #searchWrapper>
     <div class="center-topbar">
       <form action="/" method="post">
         <input class="search-input" type="text" name="searchByGame" placeholder="Search by Game..." (input)="searchString.set($event.target.value)" />

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
@@ -54,13 +54,20 @@ export class TopBar {
   private searchResults$ = this.searchString$.pipe(
     filter((search: string) => search.length > 0),
     debounceTime(300),
-    switchMap((search: string) => this.searchService.gameSearch(search)),
-    tap((results:CardModel[]) => console.log(results))
+    switchMap((search: string) => this.searchService.gameSearch(search))
   );
 
   searchResults = signal<CardModel[]>([]);
   constructor() {
     this.searchResults$.subscribe((results: CardModel[]) => this.searchResults.set(results));
+  }
+
+  @ViewChild('searchWrapper') searchWrapper!: ElementRef;
+
+  @HostListener('document:click', ['$event.target'])
+  onClick(target: EventTarget | null) {
+    if (this.searchResults().length === 0) return;
+    if (!this.searchWrapper.nativeElement.contains(target)) this.searchResults.set([]);
   }
 
 }
