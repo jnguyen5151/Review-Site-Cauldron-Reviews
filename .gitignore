@@ -74,8 +74,10 @@ dist/
 .angular/
 .env
 src/environments/environment.local.ts
+src/environments/environment.prod.ts
 **/environment.ts
 **/environment.local.ts
+**/environment.prod.ts
 
 Web.config
 appsettings.json
