@@ -51,6 +51,12 @@ namespace ReviewAPI.Services
                                         Click here to verify your account
                                       </a>
                                     </p>
+                                    <p>
+                                        If the link is unaccessible, please copy the following link into the browser:
+                                    </p>
+                                    <p>
+                                        {verificationLink}
+                                    </p>
                                   </body>
                                 </html>"
                         },
