@@ -12,8 +12,8 @@ const PUBLIC_ENDPOINTS = [
   '/api/Account/Login',
   '/api/Account/Register',
   '/api/Account/ConfirmEmail',
-  '/api/Account/Refresh'
-
+  '/api/Account/Refresh',
+  '/api/Account/relog'
 ]
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {

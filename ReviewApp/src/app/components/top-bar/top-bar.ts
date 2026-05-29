@@ -7,6 +7,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service';
 import { SearchService } from '../../services/search-service';
 import { Login } from '../login/login';
+import { Warning } from '../warning/warning';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { CardModel } from '../../models/game-search';
 
@@ -28,6 +29,14 @@ export class TopBar {
 
   protected openModal() {
     this.dialog.open(Login);
+  }
+
+  protected openWarning() {
+    if (localStorage.getItem('warning') != 'true')
+    {
+      this.dialog.open(Warning);
+      localStorage.setItem('warning', 'true');
+    }
   }
 
   isSidebarOpen = signal<'open' | 'closed'>('closed');
@@ -68,6 +77,11 @@ export class TopBar {
   onClick(target: EventTarget | null) {
     if (this.searchResults().length === 0) return;
     if (!this.searchWrapper.nativeElement.contains(target)) this.searchResults.set([]);
+  }
+
+  ngOnInit() {
+    this.openWarning();
+    this.authService.getAccount();
   }
 
 }

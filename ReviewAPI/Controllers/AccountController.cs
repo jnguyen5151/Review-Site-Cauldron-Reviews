@@ -285,5 +285,45 @@ namespace ReviewAPI.Controllers
             return Ok();
         }
 
+        [HttpGet("relog")]
+        public async Task<IActionResult> relog()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+            {
+                Console.WriteLine("null user id");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"{claim.Type} = {claim.Value}");
+                }
+
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                Console.WriteLine("! User not Found !");
+                Console.WriteLine("null user");
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            UserDto account = new UserDto
+            {
+                id = user.Id,
+                displayName = user.DisplayName,
+                roles = roles,
+                userName = user.UserName!,
+                email = user.Email!
+            };
+
+            Console.WriteLine("ACCOUNT IS " + account);
+
+            return Ok(account);
+            
+        }
+
     }
 }

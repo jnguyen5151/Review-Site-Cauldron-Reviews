@@ -2,7 +2,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  
 }
 
 header {
@@ -10,8 +9,9 @@ header {
 }
 
 .home-body {
+  min-height: 90vh;
 }
 
 footer {
-  background-color: rgb(19 17 17)
+  background-color: #0f0f17;
 }

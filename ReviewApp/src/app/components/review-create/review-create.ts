@@ -23,7 +23,6 @@ export class ReviewCreate {
 
     this.reviewService.createReview(newReview).subscribe({
       next: (created: Review) => {
-        console.log('Created review: ', created);
       },
       error: (err: any) => {
         console.error('Failed to create Review: ', err);
