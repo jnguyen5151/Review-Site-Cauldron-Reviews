@@ -203,29 +203,7 @@ namespace ReviewAPI.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Append(
-                "access_token",
-                string.Empty,
-                new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.UtcNow.AddDays(-1)
-                }
-            );
-
-            Response.Cookies.Append(
-                "refresh_token",
-                string.Empty,
-                new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.UtcNow.AddDays(-1)
-                }
-            );
+            ClearAuthCookies();
 
             return Ok();
 
@@ -285,45 +263,71 @@ namespace ReviewAPI.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("relog")]
         public async Task<IActionResult> relog()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId is null)
+            var refreshToken = Request.Cookies["refresh_token"];
+            if (string.IsNullOrEmpty(refreshToken))
             {
-                Console.WriteLine("null user id");
-                foreach (var claim in User.Claims)
-                {
-                    Console.WriteLine($"{claim.Type} = {claim.Value}");
-                }
-
-                return NotFound();
+                return Unauthorized("NO REFRESH TOKEN");
+            }
+            var foundUser = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+            if (foundUser is null)
+            {
+                ClearAuthCookies();
+                Console.WriteLine("RELOG user not found");
+                return NotFound("USER NOT FOUND");
+            }
+            if (foundUser.RefreshTokenExpiryTime < DateTime.UtcNow)
+            {
+                ClearAuthCookies();
+                return Unauthorized("REFRESH TOKEN EXPIRED");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user is null)
-            {
-                Console.WriteLine("! User not Found !");
-                Console.WriteLine("null user");
-                return NotFound();
-            }
-
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(foundUser);
 
             UserDto account = new UserDto
             {
-                id = user.Id,
-                displayName = user.DisplayName,
+                id = foundUser.Id,
+                displayName = foundUser.DisplayName,
                 roles = roles,
-                userName = user.UserName!,
-                email = user.Email!
+                userName = foundUser.UserName!,
+                email = foundUser.Email!
             };
 
-            Console.WriteLine("ACCOUNT IS " + account);
+            var newToken = await _jwtService.GenerateAccessToken(foundUser);
+            SetAuthCookies(newToken, refreshToken!);
 
             return Ok(account);
             
         }
 
+        private void ClearAuthCookies()
+        {
+            Response.Cookies.Append(
+                "access_token",
+                string.Empty,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddDays(-1)
+                }
+            );
+
+            Response.Cookies.Append(
+                "refresh_token",
+                string.Empty,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddDays(-1)
+                }
+            );
+        }
     }
 }

@@ -32,10 +32,11 @@ export class TopBar {
   }
 
   protected openWarning() {
-    if (localStorage.getItem('warning') != 'true')
-    {
-      this.dialog.open(Warning);
-      localStorage.setItem('warning', 'true');
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('warning') != 'true') {
+        this.dialog.open(Warning);
+        localStorage.setItem('warning', 'true');
+      }
     }
   }
 
