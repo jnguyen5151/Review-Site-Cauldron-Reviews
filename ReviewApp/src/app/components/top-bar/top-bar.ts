@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, signal, ElementRef, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
@@ -34,7 +34,7 @@ export class TopBar {
   protected openWarning() {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('warning') != 'true') {
-        this.dialog.open(Warning);
+        this.dialog.open(Warning, {});
         localStorage.setItem('warning', 'true');
       }
     }
@@ -68,8 +68,18 @@ export class TopBar {
   );
 
   searchResults = signal<CardModel[]>([]);
-  constructor() {
+
+
+
+  ngOnInit() {
     this.searchResults$.subscribe((results: CardModel[]) => this.searchResults.set(results));
+    this.authService.getAccount();
+  }
+
+  constructor() {
+    afterNextRender(() => {
+      this.openWarning();
+    })
   }
 
   @ViewChild('searchWrapper') searchWrapper!: ElementRef;
@@ -78,11 +88,6 @@ export class TopBar {
   onClick(target: EventTarget | null) {
     if (this.searchResults().length === 0) return;
     if (!this.searchWrapper.nativeElement.contains(target)) this.searchResults.set([]);
-  }
-
-  ngOnInit() {
-    this.openWarning();
-    this.authService.getAccount();
   }
 
 }
