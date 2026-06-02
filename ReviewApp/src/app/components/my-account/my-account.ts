@@ -26,9 +26,7 @@ export class MyAccount {
 
     this.authService.getAccount().subscribe((data: AccountDetailsModel) => {
 
-      console.log("data is " + data);
       this.userDetails.set(data);
-      console.log(this.userDetails);
 
       this.accountForm.setValue({
         displayName: data.displayName,
@@ -37,8 +35,6 @@ export class MyAccount {
         pronouns: data.pronouns,
         safeMode: data.safeMode
       });
-
-      console.log(this.accountForm.value);
 
     })
   }

@@ -15,8 +15,4 @@ import { AuthService } from './services/auth-service';
 })
 export class App {
   protected readonly title = signal('ReviewApp');
-
-  constructor(private authService: AuthService) {
-    this.authService.loadUserFromStorage();
-  }
 }

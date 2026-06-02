@@ -1,5 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Azure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using ReviewAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -98,5 +99,6 @@ namespace ReviewAPI.Services
 
             return principal;
         }
+
     }
 }

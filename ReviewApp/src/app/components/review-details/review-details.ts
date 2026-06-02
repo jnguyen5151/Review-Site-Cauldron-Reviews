@@ -21,7 +21,6 @@ export class ReviewDetails {
 
     this.reviewService.getReviewById(reviewId).subscribe((data: Review) => {
       this.review.set(data);
-      console.log(this.review);
     });
 
   }

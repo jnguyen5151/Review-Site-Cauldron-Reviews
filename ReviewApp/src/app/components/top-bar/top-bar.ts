@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, signal, ElementRef, ViewChild } from '@angular/core';
+import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service';
 import { SearchService } from '../../services/search-service';
 import { Login } from '../login/login';
+import { Warning } from '../warning/warning';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { CardModel } from '../../models/game-search';
 
@@ -28,6 +29,15 @@ export class TopBar {
 
   protected openModal() {
     this.dialog.open(Login);
+  }
+
+  protected openWarning() {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('warning') != 'true') {
+        this.dialog.open(Warning, {});
+        localStorage.setItem('warning', 'true');
+      }
+    }
   }
 
   isSidebarOpen = signal<'open' | 'closed'>('closed');
@@ -58,8 +68,18 @@ export class TopBar {
   );
 
   searchResults = signal<CardModel[]>([]);
-  constructor() {
+
+
+
+  ngOnInit() {
     this.searchResults$.subscribe((results: CardModel[]) => this.searchResults.set(results));
+    this.authService.getAccount();
+  }
+
+  constructor() {
+    afterNextRender(() => {
+      this.openWarning();
+    })
   }
 
   @ViewChild('searchWrapper') searchWrapper!: ElementRef;

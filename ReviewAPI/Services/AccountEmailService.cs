@@ -44,8 +44,8 @@ namespace ReviewAPI.Services
                                 <!DOCTYPE html>
                                 <html>
                                   <body>
-                                    <p>Confirm your Account with Reviews</p>
-                                    <p>If you did not create an account, ignore this email.</p>
+                                    <p>Confirm your Account with TheCauldron Reviews</p>
+                                    <p>If you did not create an account, you can safely ignore this email.</p>
                                     <p>
                                       <a href=""{verificationLink}"">
                                         Click here to verify your account

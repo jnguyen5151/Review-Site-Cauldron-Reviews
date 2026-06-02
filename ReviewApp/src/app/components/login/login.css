@@ -65,3 +65,35 @@
   cursor: pointer;
   border-radius: 10px;
 }
+
+a:visited {
+    color: #4a9eff;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 1s;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fade-out 2s;
+}
