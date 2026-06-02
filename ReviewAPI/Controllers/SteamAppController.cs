@@ -29,7 +29,7 @@ namespace ReviewAPI.Controllers
             [FromQuery] List<string>? publishers = null,
             [FromQuery] List<string>? developers = null,
             [FromQuery] int page = 1,
-            [FromQuery] int appCount = 30
+            [FromQuery] int appCount = 15
             )
         {
             var query = _context.SteamApps.AsQueryable();
