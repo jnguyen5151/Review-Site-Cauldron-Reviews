@@ -1,17 +1,21 @@
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 <div class="create-card">
+
   <div class="create-header">
     Create Your Review
   </div>
+
   <div class="create-body">
+
     <form>
       <div class="row">
 
-        <label class="row-label"
+        <label class="item-label"
                for="gameName">
           Game:
         </label>
 
-        <div class="row-value">
+        <div class="item-value">
           <input type="text"
                  class="form-control"
                  [field]="reviewForm.gameName"
@@ -28,12 +32,12 @@
         </div>
         }
 
-        <label class="row-label"
+        <label class="item-label"
                for="rating">
           Rating:
         </label>
 
-        <div class="row-value">
+        <div class="item-value">
           <input type="number"
                  class="form-control"
                  [field]="reviewForm.rating"
@@ -51,12 +55,12 @@
         }
 
 
-        <label class="row-label"
+        <label class="item-label"
                for="title">
           Title:
         </label>
 
-        <div class="row-value">
+        <div class="item-value">
           <input type="text"
                  class="form-control"
                  [field]="reviewForm.title"
@@ -77,16 +81,14 @@
 
       <div class="row">
 
-        <label class="row-label"
+        <label class="item-label"
                for="content">
           Content:
         </label>
-        <div class="row-value">
-          <textarea class="form-control"
-                    [field]="reviewForm.content"
-                    id="content"
-                    rows="20"
-                    cols="100"></textarea>
+        <div class="item-value">
+          <quill-editor
+            placeholder="Enter Review"
+            [modules]="quillConfig"></quill-editor>
         </div>
         @if (reviewForm.content().invalid() && reviewForm.content().touched())
         {
@@ -99,7 +101,10 @@
         }
 
       </div>
+
+
       <button type="button" (click)="submitReview()">Submit Review</button>
     </form>
+
   </div>
 </div>
