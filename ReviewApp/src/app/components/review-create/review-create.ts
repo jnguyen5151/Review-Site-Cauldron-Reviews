@@ -5,11 +5,12 @@ import { Field, form } from '@angular/forms/signals';
 import { Review, initialData, reviewSchema } from '../../models/review';
 import { ReviewService } from '../../services/review-service';
 
+import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill'
 
 @Component({
   selector: 'app-review-create',
-  imports: [Field, QuillModule],
+  imports: [Field, FormsModule, QuillModule],
   templateUrl: './review-create.html',
   styleUrl: './review-create.css',
 })
@@ -19,10 +20,13 @@ export class ReviewCreate {
   reviewForm = form(this.reviewModel, reviewSchema);
 
   private reviewService = inject(ReviewService);
+  reviewContent = '';
 
   submitReview() {
 
     const newReview = this.reviewModel();
+    newReview.content = this.reviewContent;
+    console.log(newReview);
 
     this.reviewService.createReview(newReview).subscribe({
       next: (created: Review) => {
@@ -41,7 +45,7 @@ export class ReviewCreate {
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }],
         [{ 'align': [] }],
-        [ { header: 1 }, { header: 2 }],
+        [{ header: 1 }, { header: 2 }],
         [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ list: 'ordered' }, { list: 'bullet' }],
         ['link', 'image', 'video']

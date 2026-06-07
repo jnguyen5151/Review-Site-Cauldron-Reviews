@@ -1,0 +1,39 @@
+.create-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+    border: solid 1px red;
+}
+
+.create-header {
+
+}
+
+.create-body {
+
+}
+
+.form-body {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px blue;
+}
+
+.row {
+
+}
+
+.item-label {
+  color: #e2e2f0;
+}
+
+.item-value {
+
+}
+
+.error-message {
+    color: red;
+}
+
+

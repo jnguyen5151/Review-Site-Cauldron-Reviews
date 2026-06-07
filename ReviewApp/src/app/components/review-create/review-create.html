@@ -7,54 +7,11 @@
 
   <div class="create-body">
 
-    <form>
+    <form class="form-body">
+
       <div class="row">
 
-        <label class="item-label"
-               for="gameName">
-          Game:
-        </label>
-
-        <div class="item-value">
-          <input type="text"
-                 class="form-control"
-                 [field]="reviewForm.gameName"
-                 id="gameName"
-                 placeholder="Game Name (required)" />
-        </div>
-        @if (reviewForm.gameName().invalid() && reviewForm.gameName().touched())
-        {
-        <div>
-          @for (error of reviewForm.gameName().errors(); track error.kind)
-          {
-          <div>{{ error.message }}</div>
-          }
-        </div>
-        }
-
-        <label class="item-label"
-               for="rating">
-          Rating:
-        </label>
-
-        <div class="item-value">
-          <input type="number"
-                 class="form-control"
-                 [field]="reviewForm.rating"
-                 id="rating"
-                 placeholder="Rating 0-100 (required)" />
-        </div>
-        @if (reviewForm.rating().invalid() && reviewForm.rating().touched())
-        {
-        <div>
-          @for (error of reviewForm.rating().errors(); track error.kind)
-          {
-          <div>{{ error.message }}</div>
-          }
-        </div>
-        }
-
-
+        <!--TITLE-->
         <label class="item-label"
                for="title">
           Title:
@@ -72,30 +29,74 @@
         <div>
           @for (error of reviewForm.title().errors(); track error.kind)
           {
-          <div>{{ error.message }}</div>
+          <div class="error-message">{{ error.message }}</div>
+          }
+        </div>
+        }
+
+        <!--GAME NAME-->
+        <label class="item-label"
+               for="gameName">
+          Game:
+        </label>
+
+        <div class="item-value">
+          <input type="text"
+                 class="form-control"
+                 [field]="reviewForm.gameName"
+                 id="gameName"
+                 placeholder="Game Name (required)" />
+        </div>
+        @if (reviewForm.gameName().invalid() && reviewForm.gameName().touched())
+        {
+        <div>
+          @for (error of reviewForm.gameName().errors(); track error.kind)
+          {
+          <div class="error-message">{{ error.message }}</div>
+          }
+        </div>
+        }
+
+        <!--RATING-->
+        <label class="item-label"
+               for="rating">
+          Rating:
+        </label>
+
+        <div class="item-value">
+          <input type="number"
+                 class="form-control"
+                 [field]="reviewForm.rating"
+                 id="rating"
+                 placeholder="Rating 0-100 (required)" />
+        </div>
+        @if (reviewForm.rating().invalid() && reviewForm.rating().touched())
+        {
+        <div>
+          @for (error of reviewForm.rating().errors(); track error.kind)
+          {
+          <div class="error-message">{{ error.message }}</div>
           }
         </div>
         }
 
       </div>
 
+      <!--Editor-->
       <div class="row">
 
-        <label class="item-label"
-               for="content">
-          Content:
-        </label>
         <div class="item-value">
-          <quill-editor
-            placeholder="Enter Review"
-            [modules]="quillConfig"></quill-editor>
+          <quill-editor placeholder="Enter Review"
+                        [modules]="quillConfig"
+                        [(ngModel)]="reviewContent"
+                        [ngModelOptions]="{standalone: true}"></quill-editor>
         </div>
         @if (reviewForm.content().invalid() && reviewForm.content().touched())
         {
         <div>
           @for (error of reviewForm.content().errors(); track error.kind)
           {
-          <div>{{ error.message }}</div>
+          <div class="error-message">{{ error.message }}</div>
           }
         </div>
         }
