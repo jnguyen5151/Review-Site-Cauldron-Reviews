@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
-    border: solid 1px red;
 }
 
 .create-header {
@@ -17,7 +16,6 @@
 .form-body {
   display: flex;
   flex-direction: row;
-  border: solid 1px blue;
 }
 
 .row {

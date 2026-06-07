@@ -8,7 +8,6 @@
   <div class="create-body">
 
     <form class="form-body">
-
       <div class="row">
 
         <!--TITLE-->
@@ -80,16 +79,33 @@
         </div>
         }
 
+        <button type="button" (click)="submitReview()">Submit Review</button>
+
       </div>
 
       <!--Editor-->
       <div class="row">
 
         <div class="item-value">
+
+          @if (!editorReady()) {
+          <div class="editor-placeholder">
+            <div class="loading">
+            </div>
+            Loading editor...
+          </div>
+          }
+
+          @if (isBrowser && quillConfig && editorReady()) {
           <quill-editor placeholder="Enter Review"
-                        [modules]="quillConfig"
+                        [modules]="quillConfig.modules"
+                        [formats]="quillConfig.formats"
                         [(ngModel)]="reviewContent"
-                        [ngModelOptions]="{standalone: true}"></quill-editor>
+                        [ngModelOptions]="{ standalone: true }"
+                        format="html">
+          </quill-editor>
+          }
+
         </div>
         @if (reviewForm.content().invalid() && reviewForm.content().touched())
         {
@@ -103,8 +119,6 @@
 
       </div>
 
-
-      <button type="button" (click)="submitReview()">Submit Review</button>
     </form>
 
   </div>
