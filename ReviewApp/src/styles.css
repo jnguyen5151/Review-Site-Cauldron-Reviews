@@ -43,6 +43,8 @@ body {
 .align-center { align-items: center; }
 
 .justify-between { justify-content: space-between; }
+.justify-evenly { justify-content: space-evenly; }
+.justify-around { justify-content: space-around; }
 
 .ql-toolbar {
   background: #e2e2f0;

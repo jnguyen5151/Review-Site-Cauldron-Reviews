@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   getAccount(): Observable<any> {
-    return this.rawHttp.get(`${this.apiUrl}/get`, { withCredentials: true });
+    return this.http.get(`${this.apiUrl}/get`, { withCredentials: true });
   }
 
   relog(): void {
