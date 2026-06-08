@@ -27,7 +27,7 @@ export const initialData: Review = {
 }
 
 export const reviewSchema = schema<Review>((root) => {
-  required(root.gameName, { message: 'Please Select the Game you are Reviewing' });
+  required(root.gameName, { message: 'Please select a Game' });
   required(root.rating, { message: 'Rating is Required' });
   min(root.rating, 0, { message: 'Rating must be from 0 - 100' });
   max(root.rating, 100, {message: 'Rating must be from 0 - 100'});

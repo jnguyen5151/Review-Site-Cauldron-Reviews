@@ -2,7 +2,7 @@
   <section *ngIf="review() as review">
     <h2 class="review-header">Review Header</h2>
     <p class="review-author">written by {{review.authorName}} on {{review.createdAt | date:'MMMM d, yyyy'}}</p>
-    <p class="review-content"> {{review.content}} </p>
+    <p class="review-content" [innerHTML]="safeContent()"></p>
 
   </section>
 </article>

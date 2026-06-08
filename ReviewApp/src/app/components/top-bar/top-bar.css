@@ -29,6 +29,7 @@
   background: #272729;
   display: flex;
   position: absolute;
+  z-index: 9999;
   width: 100%;
   top: 68%;
   cursor: pointer;

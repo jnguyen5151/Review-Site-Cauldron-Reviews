@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ReviewService } from '../../services/review-service';
 import { Review } from '../../models/review';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-review-details',
@@ -13,8 +14,13 @@ import { Review } from '../../models/review';
 })
 export class ReviewDetails {
   route: ActivatedRoute = inject(ActivatedRoute);
-  reviewService = inject(ReviewService);
+  private sanitizer = inject(DomSanitizer);
+  private reviewService = inject(ReviewService);
   review = signal<Review | null>(null);
+
+  safeContent = computed(() =>
+    this.sanitizer.bypassSecurityTrustHtml(this.review()?.content ?? '')
+  );
 
   ngOnInit(): void {
     const reviewId = Number(this.route.snapshot.paramMap.get('reviewId'));
