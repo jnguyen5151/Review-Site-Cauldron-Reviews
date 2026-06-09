@@ -102,6 +102,7 @@
                         [formats]="quillConfig.formats"
                         [(ngModel)]="reviewContent"
                         [ngModelOptions]="{ standalone: true }"
+                        (onContentChanged)="onEditorChange($event.html)"
                         format="html">
           </quill-editor>
           }
@@ -122,6 +123,7 @@
     </form>
 
   </div>
-
-  REVIEW PREVIEW CURRENTLY WORK IN PROGRESS
+  <h2>Below is how your review will look once posted to the website</h2>
 </div>
+
+<div class="preview ql-editor" [innerHTML]="previewContent()"></div>

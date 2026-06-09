@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 80vh;
+    min-height: 40vh;
 }
 
 .create-header {
@@ -14,8 +14,8 @@
 }
 
 .form-body {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .row {
@@ -23,7 +23,7 @@
 }
 
 .item-label {
-  color: #e2e2f0;
+    color: #e2e2f0;
 }
 
 .item-value {
@@ -34,4 +34,12 @@
     color: red;
 }
 
+.preview {
+}
 
+.preview.ql-editor {
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 1rem;
+}
