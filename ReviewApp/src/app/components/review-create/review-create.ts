@@ -7,6 +7,7 @@ import { ReviewService } from '../../services/review-service';
 
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-review-create',
@@ -23,6 +24,7 @@ export class ReviewCreate {
   private ngZone = inject(NgZone);
 
   reviewContent = '';
+  previewContent = signal<SafeHtml>('');
   isBrowser = false;
   public quillConfig: any = null;
   private static quillIntialized = false;
@@ -31,7 +33,7 @@ export class ReviewCreate {
   editorReady = signal(false);
 
 
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     if (this.isBrowser) {
@@ -108,6 +110,12 @@ export class ReviewCreate {
         };
       });
     }
+  }
+
+  onEditorChange(content: string | null) {
+    this.previewContent.set(
+      this.sanitizer.bypassSecurityTrustHtml(content ?? '')
+    );
   }
 
   submitReview() {
