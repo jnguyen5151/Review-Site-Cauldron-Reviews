@@ -113,14 +113,15 @@ export class ReviewCreate {
   }
 
   onEditorChange(content: string | null) {
+    const cleaned = (content ?? '').replace(/&nbsp;/g, ' ');
     this.previewContent.set(
-      this.sanitizer.bypassSecurityTrustHtml(content ?? '')
+      this.sanitizer.bypassSecurityTrustHtml(cleaned ?? '')
     );
   }
 
   submitReview() {
     const newReview = this.reviewModel();
-    newReview.content = this.reviewContent;
+    newReview.content = this.reviewContent.replace(/&nbsp;/g, ' ');
     console.log(newReview);
     this.reviewService.createReview(newReview).subscribe();
   }

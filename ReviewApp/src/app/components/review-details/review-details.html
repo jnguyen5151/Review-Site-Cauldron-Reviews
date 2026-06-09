@@ -1,8 +1,9 @@
 <article class="review">
   <section *ngIf="review() as review">
-    <h2 class="review-header">Review Header</h2>
+    <h4 class="review-warning">⚠️ This page is currently WORK IN PROGRESS ⚠️</h4>
+    <h2 class="review-header"> {{review.title}}</h2>
     <p class="review-author">written by {{review.authorName}} on {{review.createdAt | date:'MMMM d, yyyy'}}</p>
-    <p class="review-content" [innerHTML]="safeContent()"></p>
-
+    <div class="review-content" [innerHTML]="safeContent()"></div>
+    <p class="score"> Rating: {{review.rating}}/100 </p>
   </section>
 </article>
