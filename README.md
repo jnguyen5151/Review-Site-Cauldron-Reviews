@@ -52,14 +52,21 @@ A full-stack game review web application built with Angular and .NET Core, hoste
    Update `appsettings.json` with your connection string, JWT secret, and AWS SES credentials:
    ```json
    {
+     "AppSettings": {
+       "FrontendUrl": "http://localhost:4200"
+     },
      "ConnectionStrings": {
-       "DefaultConnection": "your-sql-connection-string"
+       "DevConnection": "your-sql-connection-string"
      },
      "Jwt": {
-       "Key": "your-secret-key"
+       "Secret": "your-secret-key",
+       "ValidIssuer": "CauldronReviews",
+       "ValidAudience": "Cauldronuser"
      },
      "Aws": {
        "SesRegion": "us-east-1",
+     },
+     "SES": {
        "FromEmail": "your-email@example.com"
      }
    }
