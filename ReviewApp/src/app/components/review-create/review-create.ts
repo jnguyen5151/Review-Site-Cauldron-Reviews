@@ -8,6 +8,7 @@ import { ReviewService } from '../../services/review-service';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-review-create',
@@ -22,6 +23,7 @@ export class ReviewCreate {
 
   private reviewService = inject(ReviewService);
   private ngZone = inject(NgZone);
+  private router = inject(Router);
 
   reviewContent = '';
   previewContent = signal<SafeHtml>('');
@@ -123,6 +125,8 @@ export class ReviewCreate {
     const newReview = this.reviewModel();
     newReview.content = this.reviewContent.replace(/&nbsp;/g, ' ');
     console.log(newReview);
-    this.reviewService.createReview(newReview).subscribe();
+    this.reviewService.createReview(newReview).subscribe(() => {
+      this.router.navigate(['/']);
+    });
   }
 }
