@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DialogRef } from '@angular/cdk/dialog';
+import { Dialog, DialogRef } from '@angular/cdk/dialog';
 
 import { AuthService } from '../../services/auth-service';
+import { Register } from '../register/register';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,8 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private dialogRef = inject(DialogRef);
+  private dialog = inject(Dialog);
+  modalView: 'Login' | 'Register' = 'Login';
 
   loginForm: FormGroup = this.fb.group({
     identifier: '',
@@ -42,12 +45,12 @@ export class Login {
 
   }
 
-  closeModal() {
-    this.dialogRef.close();
+  protected openRegisterModal() {
+    this.modalView = 'Register';
   }
 
-  backToLogin() {
-    console.log('Back to Login triggered!');
+  closeModal() {
+    this.dialogRef.close();
   }
 
 }

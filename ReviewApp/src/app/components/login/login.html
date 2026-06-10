@@ -1,13 +1,12 @@
 <div class="login-card"
      animate.enter="fade-in">
+
   <div class="button-row">
-    <button class="back-button" type="button" (click)="backToLogin()">
-      back
-    </button>
     <button class="close-button" type="button" (click)="closeModal()">
       close
     </button>
   </div>
+
   <div class="login-header">
     Login
   </div>
@@ -64,9 +63,9 @@
       <a > Click Here! </a>
     </div>
 
-    <div>
-      New to Cauldron Reviews?
-      <a routerLink="/register" (click)="closeModal()">Sign Up Here!</a>
+    <div class="sign-up flex-row">
+      New to Cauldron?
+      <button (click)="closeModal(); openRegisterModal()">Sign Up Here!</button>
     </div>
 
   </div>
