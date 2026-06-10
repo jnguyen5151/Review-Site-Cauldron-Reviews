@@ -3,11 +3,30 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  border-left: 3px solid #e2e2f0;
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  transition: background 0.2s ease, border-left-color 0.2s ease;
+
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeSlideIn 0.35s ease forwards;
+  animation-delay: calc(var(--i) * 60ms);
 }
 
-  .review:hover {
-    background-color: #272729;
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.review:hover {
+    background: linear-gradient(to right, rgba(120, 80, 200, 0.12), #1a1a1a);
+    border-left-color: #7c4dcc
+}
 
 .reviewLeft {
   

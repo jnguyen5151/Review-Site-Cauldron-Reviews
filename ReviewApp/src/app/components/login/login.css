@@ -12,7 +12,7 @@
 .button-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -66,6 +66,21 @@
   border-radius: 10px;
 }
 
+.recover-button {
+    margin-top: 8px;
+}
+
+.sign-up button {
+  margin-left: 4px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #0066CC;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 a:visited {
     color: #4a9eff;
 }
@@ -97,3 +112,4 @@ a:visited {
 .fade-out {
   animation: fade-out 2s;
 }
+

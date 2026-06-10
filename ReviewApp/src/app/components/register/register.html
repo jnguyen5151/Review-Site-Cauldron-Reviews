@@ -1,11 +1,23 @@
 <div class="account-card">
+  <div class="button-row">
+    <button class="back-button" type="button" (click)="closeModal(); openLoginModal()">
+      login
+    </button>
+    <button class="close-button" type="button" (click)="closeModal()">
+      close
+    </button>
+  </div>
   <div class="account-header">
     Create Your Account
   </div>
+
   <div class="account-body">
+
     <form [formGroup]="registerForm" (ngSubmit)="register()">
+
       <div class="row">
 
+        <!--USERNAME-->
         <label class="row-label"
                for="userName">
           Username:
@@ -20,9 +32,10 @@
         </div>
         @if (registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched)
         {
-          <div class="error-messages">Username must be 3 - 15 characters in length</div>
+        <div class="error-messages">Username must be 3 - 15 characters in length</div>
         }
 
+        <!--EMAIL-->
         <label class="row-label"
                for="title">
           Email:
@@ -37,9 +50,10 @@
         </div>
         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched)
         {
-          <div class="error-messages">Enter a valid email</div>
+        <div class="error-messages">Enter a valid email</div>
         }
 
+        <!--PASSWORD-->
         <label class="row-label"
                for="">
           Password:
@@ -61,15 +75,22 @@
 
         @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid)
         {
-          @for (message of passwordMessages; track $index)
-          {
-            <div class="error-messages">* {{ message }}</div>
-          }
+        @for (message of passwordMessages; track $index)
+        {
+        <div class="error-messages">* {{ message }}</div>
+        }
         }
 
       </div>
 
       <button class="submit-btn" type="submit">Register</button>
+
+      @if (registerMessage()) {
+      <div [class.success-message]="registerMessage()!.type === 'success'"
+           [class.error-message]="registerMessage()!.type === 'error'">
+        {{ registerMessage()!.message }}
+      </div>
+      }
 
     </form>
   </div>

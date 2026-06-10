@@ -38,7 +38,7 @@
     </div>
 
     <div *ngIf="!isLoggedIn()" class="flex-col center-v justify-between hover">
-      <span class="icon icon-xl" (click)="openModal()">
+      <span class="icon icon-xl" (click)="openLoginModal()">
         login
       </span>
       <div>Login</div>
@@ -52,7 +52,7 @@
     </div>
 
     <div *ngIf="!isLoggedIn()" class="flex-col center-v justify-between hover">
-      <span class="icon icon-xl" [routerLink]="['/register']">
+      <span class="icon icon-xl" (click)="openRegisterModal()">
         account_box
       </span>
       <div>Sign Up</div>

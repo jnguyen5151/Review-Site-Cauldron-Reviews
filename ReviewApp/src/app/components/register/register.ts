@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angul
 
 import { AuthService } from '../../services/auth-service';
 import { registerDefaults, registerValidators, passwordValidator } from './register-form.config';
+import { Dialog, DialogRef } from '@angular/cdk/dialog';
+import { Login } from '../login/login';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +18,8 @@ export class Register {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private dialogRef = inject(DialogRef);
+  private dialog = inject(Dialog);
 
   registerForm: FormGroup = this.fb.group({
     userName: [
@@ -37,31 +41,44 @@ export class Register {
     return errors?.['messages'] ?? [];
   }
 
+  registerMessage = signal<{ type: 'success' | 'error'; message: string } | null>(null);
+
   register() {
 
     if (this.registerForm.invalid) {
-      console.log('invalid form');
       this.registerForm.markAllAsTouched();
       return;
     }
 
     const dto = this.registerForm.value;
-    console.log(dto);
 
     this.authService.register(dto).subscribe({
       next: () => {
-        console.log('Account Successfully Created');
+        this.registerMessage.set({ type: 'success', message: 'Account created, Please check your email for a Verification Link.' });
       },
       error: (err: any) => {
-        console.log('Error: ' + JSON.stringify(err.error ?? err));
+        const apiMessage = err.error?.[0]?.description ?? 'Something went wrong. Please try again.';
+        this.registerMessage.set({ type: 'error', message: apiMessage });
+        console.log(this.registerMessage());
+        console.log(err);
+        console.log(err.error);
       }
     });
+
   }
 
   showPassword = false;
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+
+  protected openLoginModal() {
+    this.dialog.open(Login);
+  }
+
+  closeModal() {
+    this.dialogRef.close();
   }
 
 }

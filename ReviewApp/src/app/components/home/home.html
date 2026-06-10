@@ -1,8 +1,9 @@
 <div class="home">
   <app-review-component
     class="review"
-    *ngFor="let review of reviewList()"
-    [review]="review">
+    *ngFor="let review of reviewList(); let i = index"
+    [review]="review"
+    [style.--i]="i">
   </app-review-component>
   <div class="paginator">
     <button class="page-button" (click)="prevPage()" [disabled]="page === 1">previous</button>
