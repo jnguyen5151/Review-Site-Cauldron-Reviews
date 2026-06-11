@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ReviewAPI.Authorization;
+using ReviewAPI.DTOs;
+using ReviewAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ReviewAPI.Models;
-using ReviewAPI.Authorization;
 
 namespace ReviewAPI.Controllers
 {
@@ -40,7 +42,20 @@ namespace ReviewAPI.Controllers
                 .ThenByDescending(gr => gr.ReviewId)
                 .Skip((page - 1) * reviewCount);
 
-            var reviews = await query.Take(reviewCount).ToListAsync();
+            var reviews = await query.Take(reviewCount)
+                .Select(r => new ReviewCardDto
+                {
+                    authorName = r.AuthorName,
+                    reviewId = r.ReviewId,
+                    gameName = r.GameName,
+                    rating = r.Rating,
+                    createdAt = r.CreatedAt,
+                    title = r.Title,
+                    likes = r.Likes,
+                    dislikes = r.Dislikes,
+                    commentNumber = r.CommentNumber
+                }).ToListAsync();
+            
             var total = await _context.GameReviews.CountAsync();
 
             return Ok(new { reviews, total });

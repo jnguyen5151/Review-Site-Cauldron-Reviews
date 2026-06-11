@@ -1,10 +1,16 @@
 <div class="home">
+  @if (isLoading()) {
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+  } @else {
   <app-review-component
     class="review"
     *ngFor="let review of reviewList(); let i = index"
     [review]="review"
     [style.--i]="i">
   </app-review-component>
+  }
   <div class="paginator">
     <button class="page-button" (click)="prevPage()" [disabled]="page === 1">previous</button>
     <span class="page-number">Page {{page}}</span>

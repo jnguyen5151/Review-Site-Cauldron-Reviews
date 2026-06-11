@@ -1,10 +1,10 @@
-import { Component, inject, signal, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { filter, takeUntil, Subject } from 'rxjs';
 
 import { ReviewComponent } from '../review-component/review-component';
-import { Review } from '../../models/review';
+import { reviewCard } from '../../models/review';
 import { ReviewService, getReviewsResponse } from '../../services/review-service';
 
 @Component({
@@ -21,27 +21,29 @@ export class HomeComponent {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router); 
 
-  reviewList = signal<Review[]>([]);
+  reviewList = signal<reviewCard[]>([]);
 
   reviewCount: number = 15;
   page: number = 1;
   totalReviews: number = 0;
-  isLoading: boolean = false;
+  isLoading = signal<boolean>(false);
   isLastPage: boolean = false;
-
+  private platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
 
     this.route.paramMap.subscribe(params => {
       this.page = +(params.get('page') ?? 1);
-      this.fetchReviews();
+      if (isPlatformBrowser(this.platformId)) {
+        this.fetchReviews();
+      }
     });
 
   }
 
   fetchReviews() {
-    if (this.isLoading) return;
-    this.isLoading = true;
+    if (this.isLoading()) return;
+    this.isLoading.set(true);
 
     this.reviewService.getAllReviews(this.reviewCount, this.page)
       .subscribe({
@@ -55,10 +57,10 @@ export class HomeComponent {
         },
         error: (err) => {
           console.log('Error getting reviews', err);
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
         complete: () => {
-          this.isLoading = false;
+          this.isLoading.set(false);
         }
       });
 
