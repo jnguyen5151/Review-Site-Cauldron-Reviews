@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Review } from '../../models/review';
+import { Review, reviewCard } from '../../models/review';
 
 @Component({
   selector: 'app-review-component',
@@ -11,5 +11,5 @@ import { Review } from '../../models/review';
   styleUrl: './review-component.css',
 })
 export class ReviewComponent {
-  @Input() review!: Review;
+  @Input() review!: reviewCard;
 }
