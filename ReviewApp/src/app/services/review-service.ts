@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-import { Review } from '../models/review';
+import { Review, reviewCard } from '../models/review';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -49,6 +49,6 @@ export class ReviewService {
 }
 
 export interface getReviewsResponse {
-  reviews: Review[];
+  reviews: reviewCard[];
   total: number;
 }

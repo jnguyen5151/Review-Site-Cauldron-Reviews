@@ -34,3 +34,15 @@ export const reviewSchema = schema<Review>((root) => {
   required(root.content, { message: 'Review Content is Required' });
   required(root.title, { message: 'Title is Required' });
 });
+
+export interface reviewCard {
+  authorName: string,
+  reviewId: number,
+  gameName: string,
+  rating: number,
+  createdAt: string,
+  title: string,
+  likes: number,
+  dislikes: number,
+  commentNumber: number
+}
