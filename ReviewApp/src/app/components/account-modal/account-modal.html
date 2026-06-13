@@ -1,6 +1,86 @@
-<!--<div class="account-card">
+<div class="modal-buttons">
+  <button></button>
+  <button></button>
+</div>
+
+@if (view === 'login'){
+<div class="login-card"
+     animate.enter="fade-in">
+
   <div class="button-row">
-    <button class="back-button" type="button" (click)="closeModal(); openLoginModal()">
+    <button class="close-button" type="button" (click)="closeModal()">
+      close
+    </button>
+  </div>
+
+  <div class="login-header">
+    Login
+  </div>
+  <div class="login-body">
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+      <div class="row">
+
+        <label class="row-label" for="identifier">
+          Username or Email:
+        </label>
+
+        <div class="row-value">
+          <input type="text"
+                 class="form-control"
+                 formControlName="identifier"
+                 id="identifier"
+                 placeholder="Enter Username or Email" />
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <label class="row-label" for="password">
+          Password:
+        </label>
+
+        <div class="row-value">
+          <input [type]="showPassword ? 'text' : 'password'"
+                 class="form-control"
+                 formControlName="password"
+                 id="password"
+                 placeholder="Enter your Password" />
+        </div>
+
+        <div>
+          <button class="show-password" type="button" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide' : 'Show'}} Password
+          </button>
+        </div>
+
+      </div>
+
+      <div>
+        <button class="submit-btn" type="submit">Login</button>
+      </div>
+
+    </form>
+
+    <div class="recover-button">
+      Forgot Password?
+      <a> Click Here! </a>
+    </div>
+
+    <div class="sign-up flex-row">
+      New to Cauldron?
+      <button (click)="switchView('register')">Sign Up Here!</button>
+    </div>
+
+  </div>
+</div>
+
+} @else {
+<div class="account-card">
+  <div class="button-row">
+    <button class="back-button" type="button" (click)="switchView('login')">
       login
     </button>
     <button class="close-button" type="button" (click)="closeModal()">
@@ -15,10 +95,10 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-      <div class="row">-->
+      <div class="row">
 
         <!--USERNAME-->
-        <!--<label class="row-label"
+        <label class="row-label"
                for="userName">
           Username:
         </label>
@@ -33,10 +113,10 @@
         @if (registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched)
         {
         <div class="error-messages">Username must be 3 - 15 characters in length</div>
-        }-->
+        }
 
         <!--EMAIL-->
-        <!--<label class="row-label"
+        <label class="row-label"
                for="title">
           Email:
         </label>
@@ -51,10 +131,10 @@
         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched)
         {
         <div class="error-messages">Enter a valid email</div>
-        }-->
+        }
 
         <!--PASSWORD-->
-        <!--<label class="row-label"
+        <label class="row-label"
                for="">
           Password:
         </label>
@@ -94,4 +174,5 @@
 
     </form>
   </div>
-</div>-->
+</div>
+}

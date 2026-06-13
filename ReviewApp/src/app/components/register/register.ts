@@ -4,7 +4,7 @@ import { Field, form } from '@angular/forms/signals';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthService } from '../../services/auth-service';
-import { registerDefaults, registerValidators, passwordValidator } from './register-form.config';
+//import { registerDefaults, registerValidators, passwordValidator } from './register-form.config';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { Login } from '../login/login';
 
@@ -21,64 +21,61 @@ export class Register {
   private dialogRef = inject(DialogRef);
   private dialog = inject(Dialog);
 
-  registerForm: FormGroup = this.fb.group({
-    userName: [
-      registerDefaults.userName,
-      registerValidators.userName
-    ],
-    email: [
-      registerDefaults.email,
-      registerValidators.email
-    ],
-    password: [
-      registerDefaults.password,
-      registerValidators.password
-    ]
-  });
+  // registerForm: FormGroup = this.fb.group({
+  //   userName: [
+  //     registerDefaults.userName,
+  //     registerValidators.userName
+  //   ],
+  //   email: [
+  //     registerDefaults.email,
+  //     registerValidators.email
+  //   ],
+  //   password: [
+  //     registerDefaults.password,
+  //     registerValidators.password
+  //   ]
+  // });
 
-  get passwordMessages(): string[] {
-    const errors = this.registerForm.get('password')?.errors;
-    return errors?.['messages'] ?? [];
-  }
+  // get passwordMessages(): string[] {
+  //   const errors = this.registerForm.get('password')?.errors;
+  //   return errors?.['messages'] ?? [];
+  // }
 
-  registerMessage = signal<{ type: 'success' | 'error'; message: string } | null>(null);
+  // registerMessage = signal<{ type: 'success' | 'error'; message: string } | null>(null);
 
-  register() {
+  // register() {
 
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
+  //   if (this.registerForm.invalid) {
+  //     this.registerForm.markAllAsTouched();
+  //     return;
+  //   }
 
-    const dto = this.registerForm.value;
+  //   const dto = this.registerForm.value;
 
-    this.authService.register(dto).subscribe({
-      next: () => {
-        this.registerMessage.set({ type: 'success', message: 'Account created, Please check your email for a Verification Link.' });
-      },
-      error: (err: any) => {
-        const apiMessage = err.error?.[0]?.description ?? 'Something went wrong. Please try again.';
-        this.registerMessage.set({ type: 'error', message: apiMessage });
-        console.log(this.registerMessage());
-        console.log(err);
-        console.log(err.error);
-      }
-    });
+  //   this.authService.register(dto).subscribe({
+  //     next: () => {
+  //       this.registerMessage.set({ type: 'success', message: 'Account created, Please check your email for a Verification Link.' });
+  //     },
+  //     error: (err: any) => {
+  //       const apiMessage = err.error?.[0]?.description ?? 'Something went wrong. Please try again.';
+  //       this.registerMessage.set({ type: 'error', message: apiMessage });
+  //     }
+  //   });
 
-  }
+  // }
 
-  showPassword = false;
+  // showPassword = false;
 
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
+  // togglePasswordVisibility() {
+  //   this.showPassword = !this.showPassword;
+  // }
 
-  protected openLoginModal() {
-    this.dialog.open(Login);
-  }
+  // protected openLoginModal() {
+  //   this.dialog.open(Login);
+  // }
 
-  closeModal() {
-    this.dialogRef.close();
-  }
+  // closeModal() {
+  //   this.dialogRef.close();
+  // }
 
 }

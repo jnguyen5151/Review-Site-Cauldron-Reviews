@@ -6,11 +6,10 @@ import { toObservable } from '@angular/core/rxjs-interop';
 
 import { AuthService } from '../../services/auth-service';
 import { SearchService } from '../../services/search-service';
-import { Login } from '../login/login';
-import { Register } from '../register/register';
 import { Warning } from '../warning/warning';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { CardModel } from '../../models/game-search';
+import { AccountModal } from '../account-modal/account-modal';
 
 @Component({
   selector: 'app-top-bar',
@@ -29,11 +28,15 @@ export class TopBar {
   roles = this.authService.roles;
 
   protected openLoginModal() {
-    this.dialog.open(Login);
+    this.dialog.open(AccountModal, {
+      data: {initialView: 'login'}
+    });
   }
 
   protected openRegisterModal() {
-    this.dialog.open(Register);
+    this.dialog.open(AccountModal, {
+      data: { initialView: 'register' }
+    });
   }
 
   protected openWarning() {
