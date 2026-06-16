@@ -9,13 +9,18 @@ header {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .home-body {
   min-height: 90vh;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 160px 1rem 1rem 1rem;
 }
 
 footer {

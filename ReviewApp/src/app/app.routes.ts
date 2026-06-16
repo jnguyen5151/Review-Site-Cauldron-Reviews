@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home';
 import { ReviewDetails } from './components/review-details/review-details';
-import { Register } from './components/register/register';
 import { ReviewCreate } from './components/review-create/review-create';
 import { VerifyEmail } from './components/verify-email/verify-email';
 import { MyAccount } from './components/my-account/my-account';
@@ -21,11 +20,6 @@ export const routes: Routes = [
     path: 'review/:reviewId',
     component: ReviewDetails,
     title: 'Review Page',
-  },
-  {
-    path: 'register',
-    component: Register,
-    title: 'Register Page'
   },
   {
     path: 'create',
