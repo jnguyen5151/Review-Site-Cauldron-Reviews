@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReviewAPI.Authorization;
 using ReviewAPI.DTOs;
+using ReviewAPI.DTOs.Steam;
 using ReviewAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -78,9 +79,9 @@ namespace ReviewAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet("getGame/{gameName}")]
-        public async Task<IActionResult> GetGameReviewByName(
+        public async Task<IActionResult> GetGameByName(
             string gameName,
-            [FromQuery] int reviewCount = 15,
+            [FromQuery] int appCount = 15,
             [FromQuery] int page = 1)
         {
             
@@ -89,36 +90,36 @@ namespace ReviewAPI.Controllers
                 return NotFound();
             }
 
-            if (reviewCount <= 0) reviewCount = 1;
-            if (reviewCount > 100) reviewCount = 100;
+            if (appCount <= 0) appCount = 1;
+            if (appCount > 100) appCount = 100;
             if (page < 1) page = 1;
 
-            IQueryable<GameReview> query = _context.GameReviews
-                .Where(gr => gr.GameName.Contains(gameName))
-                .OrderByDescending(gr => gr.CreatedAt)
-                .ThenByDescending(gr => gr.ReviewId)
-                .Skip((page - 1) * reviewCount);
+            var query = _context.SteamApps.AsQueryable();
 
-            query = query.Where(a => a.GameName.Contains(gameName));
+            query = _context.SteamApps
+                .Where(gr => gr.Name.Contains(gameName))
+                .OrderByDescending(a => a.Name.StartsWith(gameName))
+                .ThenByDescending(a => a.OwnersAvg)
+                .Skip((page - 1) * appCount);
 
-            var reviews = await query.Take(reviewCount).Select(r => new ReviewCardDto
+            var results = await query.Take(appCount).Select(p => new CardReturnDto
             {
-                authorName = r.AuthorName,
-                reviewId = r.ReviewId,
-                gameName = r.GameName,
-                rating = r.Rating,
-                createdAt = r.CreatedAt,
-                title = r.Title,
-                likes = r.Likes,
-                dislikes = r.Dislikes,
-                commentNumber = r.CommentNumber
+                AppId = p.AppId,
+                Name = p.Name,
+                Type = p.Type,
+                Price = p.Price,
+                RequiredAge = p.RequiredAge,
+                IsFree = p.IsFree,
+                ReleaseDate = p.ReleaseDate,
+                HeaderImage = p.HeaderImage,
+                Description = p.Description
             }).ToListAsync();
 
             var total = await _context.GameReviews
                 .Where(gr => gr.GameName.Contains(gameName))
                 .CountAsync();
 
-            return Ok(new { reviews, total });
+            return Ok(new { results, total });
 
         }
 
