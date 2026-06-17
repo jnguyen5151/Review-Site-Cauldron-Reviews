@@ -77,7 +77,7 @@ namespace ReviewAPI.Controllers
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token)) 
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token)) 
                 return BadRequest("Invalid Request");
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -268,7 +268,7 @@ namespace ReviewAPI.Controllers
         public async Task<IActionResult> relog()
         {
             var refreshToken = Request.Cookies["refresh_token"];
-            if (string.IsNullOrEmpty(refreshToken))
+            if (string.IsNullOrWhiteSpace(refreshToken))
             {
                 return Unauthorized("NO REFRESH TOKEN");
             }

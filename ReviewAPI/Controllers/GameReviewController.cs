@@ -76,6 +76,52 @@ namespace ReviewAPI.Controllers
             return gameReview;
         }
 
+        [AllowAnonymous]
+        [HttpGet("getGame/{gameName}")]
+        public async Task<IActionResult> GetGameReviewByName(
+            string gameName,
+            [FromQuery] int reviewCount = 15,
+            [FromQuery] int page = 1)
+        {
+            
+            if(string.IsNullOrWhiteSpace(gameName))
+            {
+                return NotFound();
+            }
+
+            if (reviewCount <= 0) reviewCount = 1;
+            if (reviewCount > 100) reviewCount = 100;
+            if (page < 1) page = 1;
+
+            IQueryable<GameReview> query = _context.GameReviews
+                .Where(gr => gr.GameName.Contains(gameName))
+                .OrderByDescending(gr => gr.CreatedAt)
+                .ThenByDescending(gr => gr.ReviewId)
+                .Skip((page - 1) * reviewCount);
+
+            query = query.Where(a => a.GameName.Contains(gameName));
+
+            var reviews = await query.Take(reviewCount).Select(r => new ReviewCardDto
+            {
+                authorName = r.AuthorName,
+                reviewId = r.ReviewId,
+                gameName = r.GameName,
+                rating = r.Rating,
+                createdAt = r.CreatedAt,
+                title = r.Title,
+                likes = r.Likes,
+                dislikes = r.Dislikes,
+                commentNumber = r.CommentNumber
+            }).ToListAsync();
+
+            var total = await _context.GameReviews
+                .Where(gr => gr.GameName.Contains(gameName))
+                .CountAsync();
+
+            return Ok(new { reviews, total });
+
+        }
+
         // PUT: api/GameReview/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("update/{id}")]

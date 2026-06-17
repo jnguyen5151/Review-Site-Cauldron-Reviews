@@ -1,9 +1,4 @@
 
-
-
-
-/*LOGIN MODAL STYLES*/
-
 .login-card {
   display: flex;
   flex-direction: column;
@@ -20,6 +15,13 @@
   flex-direction: row;
   justify-content: flex-end;
   width: 100%;
+}
+
+.button-row-register {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .back-button {
