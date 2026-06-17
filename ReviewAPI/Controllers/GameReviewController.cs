@@ -78,8 +78,8 @@ namespace ReviewAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("getGame/{gameName}")]
-        public async Task<IActionResult> GetGameByName(
+        [HttpGet("reviewByGame/{gameName}")]
+        public async Task<IActionResult> GetReviewByGame(
             string gameName,
             [FromQuery] int appCount = 15,
             [FromQuery] int page = 1)
@@ -94,25 +94,25 @@ namespace ReviewAPI.Controllers
             if (appCount > 100) appCount = 100;
             if (page < 1) page = 1;
 
-            var query = _context.SteamApps.AsQueryable();
+            var query = _context.GameReviews.AsQueryable();
 
-            query = _context.SteamApps
-                .Where(gr => gr.Name.Contains(gameName))
-                .OrderByDescending(a => a.Name.StartsWith(gameName))
-                .ThenByDescending(a => a.OwnersAvg)
+            query = query
+                .Where(r => r.GameName.Contains(gameName))
+                .OrderByDescending(r => r.CreatedAt)
+                .ThenByDescending(r => r.ReviewId)
                 .Skip((page - 1) * appCount);
 
-            var results = await query.Take(appCount).Select(p => new CardReturnDto
+            var results = await query.Take(appCount).Select(r => new ReviewCardDto
             {
-                AppId = p.AppId,
-                Name = p.Name,
-                Type = p.Type,
-                Price = p.Price,
-                RequiredAge = p.RequiredAge,
-                IsFree = p.IsFree,
-                ReleaseDate = p.ReleaseDate,
-                HeaderImage = p.HeaderImage,
-                Description = p.Description
+                authorName = r.AuthorName,
+                reviewId = r.ReviewId,
+                gameName = r.GameName,
+                rating = r.Rating,
+                createdAt = r.CreatedAt,
+                title = r.Title,
+                likes = r.Likes,
+                dislikes = r.Dislikes,
+                commentNumber = r.CommentNumber
             }).ToListAsync();
 
             var total = await _context.GameReviews
