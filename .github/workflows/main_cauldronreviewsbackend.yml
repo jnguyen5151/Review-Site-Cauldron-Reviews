@@ -27,6 +27,15 @@ jobs:
         run: dotnet build --configuration Release
         working-directory: ReviewAPI
 
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+        
+      - name: Apply migrations
+        run: dotnet ef database update
+        working-directory: ReviewAPI
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
         working-directory: ReviewAPI
