@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReviewAPI.Authorization;
 using ReviewAPI.DTOs;
-using ReviewAPI.DTOs.Steam;
 using ReviewAPI.Models;
 using System;
 using System.Collections.Generic;

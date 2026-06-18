@@ -39,12 +39,26 @@
           Game:
         </label>
 
-        <div class="item-value">
-          <input type="text"
-                 class="form-control"
-                 [field]="reviewForm.gameName"
-                 id="gameName"
-                 placeholder="Game Name (required)" />
+        <div class="search-wrapper" #searchWrapper>
+          <div class="item-value">
+            <input type="text"
+                   class="form-control"
+                   [field]="reviewForm.gameName"
+                   id="gameName"
+                   placeholder="Game Name (required)"
+                   (input)="searchString.set($event.target.value)"/>
+          </div>
+          <div class="search-results">
+            @if (searchResults().length > 0)
+            {
+            <ul class="search-list">
+              @for (result of searchResults(); track result.appId)
+              {
+              <li class="single-result" (click)="selectGame(result)">{{ result.name }}</li>
+              }
+            </ul>
+            }
+          </div>
         </div>
         @if (reviewForm.gameName().invalid() && reviewForm.gameName().touched())
         {

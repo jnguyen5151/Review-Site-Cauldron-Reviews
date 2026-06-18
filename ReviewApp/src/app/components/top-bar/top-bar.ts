@@ -72,7 +72,7 @@ export class TopBar {
   private searchResults$ = this.searchString$.pipe(
     filter((search: string) => search.length > 0),
     debounceTime(300),
-    switchMap((search: string) => this.searchService.gameSearch(search))
+    switchMap((search: string) => this.searchService.gameSearch({search}))
   );
 
   searchResults = signal<CardModel[]>([]);
