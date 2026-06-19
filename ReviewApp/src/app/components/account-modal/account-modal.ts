@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -13,6 +13,7 @@ export type ModalView = 'login' | 'register';
   selector: 'app-account-modal',
   imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './account-modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './account-modal.css',
 })
 export class AccountModal {

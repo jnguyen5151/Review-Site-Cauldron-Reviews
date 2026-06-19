@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender } from '@angular/core';
+import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { AccountModal } from '../account-modal/account-modal';
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './top-bar.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './top-bar.css',
 })
 export class TopBar {

@@ -11,7 +11,7 @@ export interface Review {
   likes: number,
   dislikes: number,
   commentNumber: number,
-  appId: number
+  steamAppId: number
 }
 
 export const initialData: Review = {
@@ -25,18 +25,8 @@ export const initialData: Review = {
   likes: 0,
   dislikes: 0,
   commentNumber: 0,
-  appId: 0
+  steamAppId: 0
 }
-
-export const reviewSchema = schema<Review>((root) => {
-  required(root.gameName, { message: 'Please select a Game' });
-  disabled(root.gameName, { when: ({valueOf}) => valueOf(root.gameName) !== ''});
-  required(root.rating, { message: 'Rating is Required' });
-  min(root.rating, 0, { message: 'Rating must be from 0 - 100' });
-  max(root.rating, 100, {message: 'Rating must be from 0 - 100'});
-  required(root.content, { message: 'Review Content is Required' });
-  required(root.title, { message: 'Title is Required' });
-});
 
 export interface reviewCard {
   authorName: string,

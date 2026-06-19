@@ -1,15 +1,16 @@
-import { Component, signal, inject, PLATFORM_ID, NgZone, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, signal, inject, PLATFORM_ID, NgZone, ViewChild, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Field, form } from '@angular/forms/signals';
+import { FormField, form } from '@angular/forms/signals';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { schema, required, min, max, disabled } from '@angular/forms/signals';
 import { QuillModule } from 'ngx-quill'
 
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 
-import { Review, initialData, reviewSchema } from '../../models/review';
+import { Review, initialData} from '../../models/review';
 import { ReviewService } from '../../services/review-service';
 import { SearchService } from '../../services/search-service';
 import { CardModel } from '../../models/game-search';
@@ -18,14 +19,23 @@ import { CardModel } from '../../models/game-search';
 
 @Component({
   selector: 'app-review-create',
-  imports: [Field, FormsModule, QuillModule],
+  imports: [FormField, FormsModule, QuillModule],
   templateUrl: './review-create.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './review-create.css',
 })
 export class ReviewCreate {
 
   reviewModel = signal<Review>(initialData);
-  reviewForm = form(this.reviewModel, reviewSchema);
+  reviewForm = form(this.reviewModel, (root) => {
+    required(root.gameName, { message: 'Please select a Game' });
+    disabled(root.gameName, { when: ({ valueOf }) => valueOf(root.steamAppId) !== 0 });
+    required(root.rating, { message: 'Rating is Required' });
+    min(root.rating, 0, { message: 'Rating must be from 0 - 100' });
+    max(root.rating, 100, { message: 'Rating must be from 0 - 100' });
+    required(root.content, { message: 'Review Content is Required' });
+    required(root.title, { message: 'Title is Required' });
+  });
 
   private reviewService = inject(ReviewService);
   private searchService = inject(SearchService);
@@ -164,6 +174,8 @@ export class ReviewCreate {
   selectGame(game: CardModel) {
     this.selectedGame = game;
     this.reviewForm.gameName().value.set(game.name);
+    this.reviewForm.steamAppId().value.set(game.appId);
+    console.log(this.reviewForm.steamAppId().value());
   }
 
 }

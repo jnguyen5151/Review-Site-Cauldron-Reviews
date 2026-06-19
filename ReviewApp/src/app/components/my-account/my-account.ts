@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthService } from '../../services/auth-service';
@@ -8,6 +8,7 @@ import { AccountDetailsModel } from '../../models/user-account';
   selector: 'app-my-account',
   imports: [ReactiveFormsModule],
   templateUrl: './my-account.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './my-account.css',
 })
 export class MyAccount {

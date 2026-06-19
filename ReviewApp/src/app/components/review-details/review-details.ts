@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ReviewService } from '../../services/review-service';
@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './review-details.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './review-details.css',
 })
 export class ReviewDetails {

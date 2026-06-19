@@ -172,6 +172,7 @@ namespace ReviewAPI.Controllers
             var displayName = User.FindFirst("displayname")?.Value ?? "Anonymous";
 
             gameReview.AuthorName = displayName;
+            Console.WriteLine(gameReview);
 
             _context.GameReviews.Add(gameReview);
             await _context.SaveChangesAsync();

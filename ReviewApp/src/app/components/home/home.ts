@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, inject, signal, OnDestroy, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { filter, takeUntil, Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { ReviewService, getReviewsResponse } from '../../services/review-service
   standalone: true,
   imports: [CommonModule, ReviewComponent],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.css',
 })
 export class HomeComponent {

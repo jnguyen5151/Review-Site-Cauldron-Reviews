@@ -19,7 +19,7 @@
         <div class="item-value">
           <input type="text"
                  class="form-control"
-                 [field]="reviewForm.title"
+                 [formField]="reviewForm.title"
                  id="title"
                  placeholder="Review Title (required)" />
         </div>
@@ -43,7 +43,7 @@
           <div class="item-value">
             <input type="text"
                    class="form-control"
-                   [field]="reviewForm.gameName"
+                   [formField]="reviewForm.gameName"
                    id="gameName"
                    placeholder="Game Name (required)"
                    (input)="searchString.set($event.target.value)"/>
@@ -79,7 +79,7 @@
         <div class="item-value">
           <input type="number"
                  class="form-control"
-                 [field]="reviewForm.rating"
+                 [formField]="reviewForm.rating"
                  id="rating"
                  placeholder="Rating 0-100 (required)" />
         </div>

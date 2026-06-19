@@ -60,7 +60,7 @@
         },
         "serve": {
           "options": {
-            "allowedHosts": [ "aboveground-nonreliably-elvis.ngrok-free.dev" ]
+            "allowedHosts": [ "aboveground-nonreliably-elvis.ngrok-free.dev", "localhost" ]
           },
           "builder": "@angular/build:dev-server",
           "configurations": {
