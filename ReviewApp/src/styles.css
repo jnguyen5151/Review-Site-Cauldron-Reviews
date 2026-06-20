@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'quill/dist/quill.core.css';
 
 body {
   background-color: #1a1a1b;
@@ -61,8 +62,8 @@ body {
   width: 60vw;
 }
 
-.ql-editor {
-  color: black;
+.create-card .ql-editor {
+    color: black;
 }
 
 .ql-editor img {
