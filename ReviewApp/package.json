@@ -35,7 +35,7 @@
     "@angular/ssr": "^22.0.3",
     "@botom/quill-resize-module": "^2.1.0",
     "express": "^5.1.0",
-    "ngx-quill": "^30.1.3",
+    "ngx-quill": "^31.0.0",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
