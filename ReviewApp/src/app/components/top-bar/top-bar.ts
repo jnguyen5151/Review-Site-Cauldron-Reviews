@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender } from '@angular/core';
+import { Component, HostListener, inject, signal, ElementRef, ViewChild, afterNextRender, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
@@ -6,17 +6,17 @@ import { toObservable } from '@angular/core/rxjs-interop';
 
 import { AuthService } from '../../services/auth-service';
 import { SearchService } from '../../services/search-service';
-import { Login } from '../login/login';
-import { Register } from '../register/register';
 import { Warning } from '../warning/warning';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { CardModel } from '../../models/game-search';
+import { AccountModal } from '../account-modal/account-modal';
 
 @Component({
   selector: 'app-top-bar',
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './top-bar.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './top-bar.css',
 })
 export class TopBar {
@@ -29,11 +29,15 @@ export class TopBar {
   roles = this.authService.roles;
 
   protected openLoginModal() {
-    this.dialog.open(Login);
+    this.dialog.open(AccountModal, {
+      data: {initialView: 'login'}
+    });
   }
 
   protected openRegisterModal() {
-    this.dialog.open(Register);
+    this.dialog.open(AccountModal, {
+      data: { initialView: 'register' }
+    });
   }
 
   protected openWarning() {
@@ -69,7 +73,7 @@ export class TopBar {
   private searchResults$ = this.searchString$.pipe(
     filter((search: string) => search.length > 0),
     debounceTime(300),
-    switchMap((search: string) => this.searchService.gameSearch(search))
+    switchMap((search: string) => this.searchService.gameSearch({search}))
   );
 
   searchResults = signal<CardModel[]>([]);

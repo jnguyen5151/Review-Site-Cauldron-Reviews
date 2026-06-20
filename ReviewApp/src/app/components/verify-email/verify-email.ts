@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth-service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './verify-email.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './verify-email.css',
 })
 export class VerifyEmail {

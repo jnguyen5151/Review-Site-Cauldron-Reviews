@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Review, reviewCard } from '../../models/review';
@@ -8,6 +8,7 @@ import { Review, reviewCard } from '../../models/review';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './review-component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './review-component.css',
 })
 export class ReviewComponent {

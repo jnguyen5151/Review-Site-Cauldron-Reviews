@@ -13,8 +13,17 @@ export class SearchService {
   private url = `${environment.apiUrl}/api/SteamApp`;
   private http = inject(HttpClient);
 
-  gameSearch(search?: string, categories?: number[], genres?: string[], publishers?: string[], developers?: string[], page?: number, appCount?: number): Observable<CardModel[]> {
+  gameSearch(options: {
+    search?: string;
+    categories?: number[];
+    genres?: string[];
+    publishers?: string[];
+    developers?: string[];
+    page?: number;
+    appCount?: number;
+  }): Observable<CardModel[]> {
     let params = new HttpParams();
+    const { search, categories, genres, publishers, developers, page, appCount } = options;
 
     if (search) params = params.set('search', search);
     if (categories) categories.forEach(c => params = params.append('categories', c.toString()));

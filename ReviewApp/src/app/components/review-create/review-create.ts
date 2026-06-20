@@ -1,27 +1,44 @@
-import { Component, signal, inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { Component, signal, inject, PLATFORM_ID, NgZone, ViewChild, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Field, form } from '@angular/forms/signals';
-
-import { Review, initialData, reviewSchema } from '../../models/review';
-import { ReviewService } from '../../services/review-service';
-
-import { FormsModule } from '@angular/forms';
-import { QuillModule } from 'ngx-quill'
+import { FormField, form } from '@angular/forms/signals';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { schema, required, min, max, disabled } from '@angular/forms/signals';
+import { QuillModule } from 'ngx-quill'
+
+import { toObservable } from '@angular/core/rxjs-interop';
+import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
+
+import { Review, initialData} from '../../models/review';
+import { ReviewService } from '../../services/review-service';
+import { SearchService } from '../../services/search-service';
+import { CardModel } from '../../models/game-search';
+
+
 
 @Component({
   selector: 'app-review-create',
-  imports: [Field, FormsModule, QuillModule],
+  imports: [FormField, FormsModule, QuillModule],
   templateUrl: './review-create.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './review-create.css',
 })
 export class ReviewCreate {
 
   reviewModel = signal<Review>(initialData);
-  reviewForm = form(this.reviewModel, reviewSchema);
+  reviewForm = form(this.reviewModel, (root) => {
+    required(root.gameName, { message: 'Please select a Game' });
+    disabled(root.gameName, { when: ({ valueOf }) => valueOf(root.steamAppId) !== 0 });
+    required(root.rating, { message: 'Rating is Required' });
+    min(root.rating, 0, { message: 'Rating must be from 0 - 100' });
+    max(root.rating, 100, { message: 'Rating must be from 0 - 100' });
+    required(root.content, { message: 'Review Content is Required' });
+    required(root.title, { message: 'Title is Required' });
+  });
 
   private reviewService = inject(ReviewService);
+  private searchService = inject(SearchService);
   private ngZone = inject(NgZone);
   private router = inject(Router);
 
@@ -114,6 +131,10 @@ export class ReviewCreate {
     }
   }
 
+  ngOnInit() {
+    this.searchResults$.subscribe((results: CardModel[]) => this.searchResults.set(results));
+  }
+
   onEditorChange(content: string | null) {
     const cleaned = (content ?? '').replace(/&nbsp;/g, ' ');
     this.previewContent.set(
@@ -124,9 +145,37 @@ export class ReviewCreate {
   submitReview() {
     const newReview = this.reviewModel();
     newReview.content = this.reviewContent.replace(/&nbsp;/g, ' ');
-    console.log(newReview);
     this.reviewService.createReview(newReview).subscribe(() => {
       this.router.navigate(['/']);
     });
   }
+
+  searchString = signal<string>('');
+  private searchString$ = toObservable(this.searchString);
+
+  private searchResults$ = this.searchString$.pipe(
+    filter((search: string) => search.length > 0),
+    debounceTime(300),
+    switchMap((search: string) => this.searchService.gameSearch({ search, appCount: 100}))
+  );
+
+  searchResults = signal<CardModel[]>([]);
+
+  selectedGame: CardModel | null = null;
+
+  @ViewChild('searchWrapper') searchWrapper!: ElementRef;
+
+  @HostListener('document:click', ['$event.target'])
+  onClick(target: EventTarget | null) {
+    if (this.searchResults().length === 0) return;
+    if (!this.searchWrapper.nativeElement.contains(target)) this.searchResults.set([]);
+  }
+
+  selectGame(game: CardModel) {
+    this.selectedGame = game;
+    this.reviewForm.gameName().value.set(game.name);
+    this.reviewForm.steamAppId().value.set(game.appId);
+    console.log(this.reviewForm.steamAppId().value());
+  }
+
 }

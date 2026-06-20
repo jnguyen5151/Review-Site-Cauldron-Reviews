@@ -1,12 +1,12 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-warning',
+  selector: 'app-search-results',
   imports: [],
-  templateUrl: './warning.html',
+  templateUrl: './search-results.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './warning.css',
+  styleUrl: './search-results.css',
 })
-export class Warning {
+export class SearchResults {
 
 }

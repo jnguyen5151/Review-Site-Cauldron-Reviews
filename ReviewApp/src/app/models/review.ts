@@ -1,4 +1,4 @@
-import { schema, required, min, max } from '@angular/forms/signals';
+import { schema, required, min, max, disabled } from '@angular/forms/signals';
 
 export interface Review {
   authorName: string,
@@ -10,7 +10,8 @@ export interface Review {
   title: string,
   likes: number,
   dislikes: number,
-  commentNumber: number
+  commentNumber: number,
+  steamAppId: number
 }
 
 export const initialData: Review = {
@@ -23,17 +24,9 @@ export const initialData: Review = {
   title: '',
   likes: 0,
   dislikes: 0,
-  commentNumber: 0
+  commentNumber: 0,
+  steamAppId: 0
 }
-
-export const reviewSchema = schema<Review>((root) => {
-  required(root.gameName, { message: 'Please select a Game' });
-  required(root.rating, { message: 'Rating is Required' });
-  min(root.rating, 0, { message: 'Rating must be from 0 - 100' });
-  max(root.rating, 100, {message: 'Rating must be from 0 - 100'});
-  required(root.content, { message: 'Review Content is Required' });
-  required(root.title, { message: 'Title is Required' });
-});
 
 export interface reviewCard {
   authorName: string,

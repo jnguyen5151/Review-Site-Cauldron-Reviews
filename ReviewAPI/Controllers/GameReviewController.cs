@@ -76,6 +76,52 @@ namespace ReviewAPI.Controllers
             return gameReview;
         }
 
+        [AllowAnonymous]
+        [HttpGet("reviewByGame/{gameName}")]
+        public async Task<IActionResult> GetReviewByGame(
+            string gameName,
+            [FromQuery] int appCount = 15,
+            [FromQuery] int page = 1)
+        {
+            
+            if(string.IsNullOrWhiteSpace(gameName))
+            {
+                return NotFound();
+            }
+
+            if (appCount <= 0) appCount = 1;
+            if (appCount > 100) appCount = 100;
+            if (page < 1) page = 1;
+
+            var query = _context.GameReviews.AsQueryable();
+
+            query = query
+                .Where(r => r.GameName.Contains(gameName))
+                .OrderByDescending(r => r.CreatedAt)
+                .ThenByDescending(r => r.ReviewId)
+                .Skip((page - 1) * appCount);
+
+            var results = await query.Take(appCount).Select(r => new ReviewCardDto
+            {
+                authorName = r.AuthorName,
+                reviewId = r.ReviewId,
+                gameName = r.GameName,
+                rating = r.Rating,
+                createdAt = r.CreatedAt,
+                title = r.Title,
+                likes = r.Likes,
+                dislikes = r.Dislikes,
+                commentNumber = r.CommentNumber
+            }).ToListAsync();
+
+            var total = await _context.GameReviews
+                .Where(gr => gr.GameName.Contains(gameName))
+                .CountAsync();
+
+            return Ok(new { results, total });
+
+        }
+
         // PUT: api/GameReview/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("update/{id}")]
@@ -126,6 +172,7 @@ namespace ReviewAPI.Controllers
             var displayName = User.FindFirst("displayname")?.Value ?? "Anonymous";
 
             gameReview.AuthorName = displayName;
+            Console.WriteLine(gameReview);
 
             _context.GameReviews.Add(gameReview);
             await _context.SaveChangesAsync();
