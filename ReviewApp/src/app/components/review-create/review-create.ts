@@ -175,7 +175,13 @@ export class ReviewCreate {
     this.selectedGame = game;
     this.reviewForm.gameName().value.set(game.name);
     this.reviewForm.steamAppId().value.set(game.appId);
-    console.log(this.reviewForm.steamAppId().value());
+    this.searchResults.set([]);
+  }
+
+  clearGame() {
+    this.selectedGame = null;
+    this.reviewForm.gameName().value.set('');
+    this.reviewForm.steamAppId().value.set(0);
   }
 
 }

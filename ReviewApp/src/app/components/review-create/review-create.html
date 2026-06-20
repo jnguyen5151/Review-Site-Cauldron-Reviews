@@ -47,6 +47,7 @@
                    id="gameName"
                    placeholder="Game Name (required)"
                    (input)="searchString.set($event.target.value)"/>
+            <button (click)="clearGame()">Clear Game</button>
           </div>
           <div class="search-results">
             @if (searchResults().length > 0)
