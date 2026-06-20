@@ -60,7 +60,7 @@
         },
         "serve": {
           "options": {
-            "allowedHosts": [ "aboveground-nonreliably-elvis.ngrok-free.dev", "localhost" ]
+            "allowedHosts": [ "aboveground-nonreliably-elvis.ngrok-free.dev", "localhost", "www.thecauldron.xyz", "thecauldron.xyz" ]
           },
           "builder": "@angular/build:dev-server",
           "configurations": {
