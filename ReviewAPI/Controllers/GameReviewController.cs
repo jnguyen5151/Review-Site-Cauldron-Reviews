@@ -77,14 +77,14 @@ namespace ReviewAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("reviewByGame/{gameName}")]
+        [HttpGet("reviewByGame/{gameId}")]
         public async Task<IActionResult> GetReviewByGame(
-            string gameName,
+            int gameId,
             [FromQuery] int appCount = 15,
             [FromQuery] int page = 1)
         {
             
-            if(string.IsNullOrWhiteSpace(gameName))
+            if(gameId == 0)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace ReviewAPI.Controllers
             var query = _context.GameReviews.AsQueryable();
 
             query = query
-                .Where(r => r.GameName.Contains(gameName))
+                .Where(r => r.SteamAppId == gameId)
                 .OrderByDescending(r => r.CreatedAt)
                 .ThenByDescending(r => r.ReviewId)
                 .Skip((page - 1) * appCount);
 
-            var results = await query.Take(appCount).Select(r => new ReviewCardDto
+            var reviews = await query.Take(appCount).Select(r => new ReviewCardDto
             {
                 authorName = r.AuthorName,
                 reviewId = r.ReviewId,
@@ -115,10 +115,10 @@ namespace ReviewAPI.Controllers
             }).ToListAsync();
 
             var total = await _context.GameReviews
-                .Where(gr => gr.GameName.Contains(gameName))
+                .Where(gr => gr.SteamAppId == gameId)
                 .CountAsync();
 
-            return Ok(new { results, total });
+            return Ok(new { reviews, total });
 
         }
 

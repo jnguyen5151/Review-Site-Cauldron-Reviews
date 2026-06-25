@@ -13,7 +13,8 @@ const PUBLIC_ENDPOINTS = [
   '/api/Account/Register',
   '/api/Account/ConfirmEmail',
   '/api/Account/Refresh',
-  '/api/Account/relog'
+  '/api/Account/relog',
+  '/api/GameReview/reviewByGame'
 ]
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {

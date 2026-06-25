@@ -1,1 +1,29 @@
-<p>search-results works!</p>
+@if (gameResult().length > 0) {
+  <div class="game-card flex-col">
+    <img src="{{gameResult()[0].headerImage}}" class="game-card-image" alt="Steam Game Header Image" />
+    <div class="game-card-row flex-row justify-between">
+      <div class="game-name">{{gameResult()[0].name}}</div>
+      <div class="game-price">${{gameResult()[0].price}}</div>
+    </div>
+    <div>{{gameResult()[0].releaseDate}}</div>
+    <div>{{gameResult()[0].description}}</div>
+  </div>
+} @else {
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+}
+
+<div class="reviews">
+  @if (isLoading()) {
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+  } @else {
+  <app-review-component class="review"
+                        *ngFor="let review of reviewList(); let i = index"
+                        [review]="review"
+                        [style.--i]="i">
+  </app-review-component>
+  }
+</div>

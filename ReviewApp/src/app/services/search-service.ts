@@ -19,17 +19,19 @@ export class SearchService {
     genres?: string[];
     publishers?: string[];
     developers?: string[];
+    steamAppId?: number;
     page?: number;
     appCount?: number;
   }): Observable<CardModel[]> {
     let params = new HttpParams();
-    const { search, categories, genres, publishers, developers, page, appCount } = options;
+    const { search, categories, genres, publishers, developers, steamAppId, page, appCount } = options;
 
     if (search) params = params.set('search', search);
     if (categories) categories.forEach(c => params = params.append('categories', c.toString()));
     if (genres) genres.forEach(g => params = params.append('genres', g.toString()));
     if (publishers) publishers.forEach(p => params = params.append('publishers', p.toString()));
     if (developers) developers.forEach(d => params = params.append('developers', d.toString()));
+    if (steamAppId) params = params.set('steamAppId', steamAppId);
     if (page) params = params.set('page', page);
     if (appCount) params = params.set('appCount', appCount);
     

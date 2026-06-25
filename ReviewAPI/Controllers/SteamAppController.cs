@@ -28,6 +28,7 @@ namespace ReviewAPI.Controllers
             [FromQuery] List<string>? genres = null,
             [FromQuery] List<string>? publishers = null,
             [FromQuery] List<string>? developers = null,
+            [FromQuery] int steamAppId = 0,
             [FromQuery] int page = 1,
             [FromQuery] int appCount = 15
             )
@@ -52,6 +53,11 @@ namespace ReviewAPI.Controllers
             if (developers != null)
             {
                 query = query.Where(d => developers.All(dev => d.SteamAppDeveloper.Any(ad => ad.SteamAppDeveloper.Developer.Contains(dev))));
+            }
+
+            if (steamAppId != 0)
+            {
+                query = query.Where(a => a.AppId == steamAppId);
             }
 
             if (search != null)

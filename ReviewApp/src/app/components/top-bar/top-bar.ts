@@ -78,8 +78,6 @@ export class TopBar {
 
   searchResults = signal<CardModel[]>([]);
 
-
-
   ngOnInit() {
     this.searchResults$.subscribe((results: CardModel[]) => this.searchResults.set(results));
     this.authService.getAccount();
@@ -97,6 +95,7 @@ export class TopBar {
   onClick(target: EventTarget | null) {
     if (this.searchResults().length === 0) return;
     if (!this.searchWrapper.nativeElement.contains(target)) this.searchResults.set([]);
+    this.searchString.set('');
   }
 
 }
