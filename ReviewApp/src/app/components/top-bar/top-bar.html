@@ -9,7 +9,12 @@
   <div class="search-wrapper" #searchWrapper>
     <div class="center-topbar">
       <form action="/" method="post">
-        <input class="search-input" type="text" name="searchByGame" placeholder="Search by Game..." (input)="searchString.set($event.target.value)" />
+        <input class="search-input"
+               type="text"
+               name="searchByGame"
+               placeholder="Search by Game..."
+               (input)="searchString.set($event.target.value)"
+               (focus)="searchString.set($event.target.value)" />
         <span class="icon icon-lg">
           search
         </span>
@@ -21,7 +26,7 @@
       <ul class="search-list">
         @for (result of searchResults(); track result.appId)
         {
-          <li class="single-result">{{ result.name }}</li>
+          <li class="single-result" [routerLink] ="['/search', result.appId, 1]">{{ result.name }}</li>
         }
         <li class="single-result"> Show More</li>
       </ul>

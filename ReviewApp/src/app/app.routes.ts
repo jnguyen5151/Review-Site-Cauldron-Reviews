@@ -4,6 +4,7 @@ import { ReviewDetails } from './components/review-details/review-details';
 import { ReviewCreate } from './components/review-create/review-create';
 import { VerifyEmail } from './components/verify-email/verify-email';
 import { MyAccount } from './components/my-account/my-account';
+import { SearchResults } from './components/search-results/search-results';
 
 export const routes: Routes = [
   {
@@ -35,5 +36,10 @@ export const routes: Routes = [
     path: 'myAccount',
     component: MyAccount,
     title: 'My Account'
+  },
+  {
+    path: 'search/:gameId/:page',
+    component: SearchResults,
+    title: 'Search Results'
   }
 ];
