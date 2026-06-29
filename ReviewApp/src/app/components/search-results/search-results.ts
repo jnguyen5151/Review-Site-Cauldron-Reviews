@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReviewService, getReviewsResponse } from '../../services/review-service';
 import { SearchService } from '../../services/search-service';
@@ -17,6 +17,7 @@ import { ReviewComponent } from '../review-component/review-component';
 })
 export class SearchResults {
   route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router); 
   private reviewService = inject(ReviewService);
   private searchService = inject(SearchService);
   private platformId = inject(PLATFORM_ID);
@@ -73,5 +74,14 @@ export class SearchResults {
         }
       });
 
+  }
+
+  prevPage() {
+    if (this.page <= 1) return;
+    this.router.navigate(['/search', this.gameId, this.page - 1]);
+  }
+
+  nextPage() {
+    this.router.navigate(['/search', this.gameId, this.page + 1]);
   }
 }
